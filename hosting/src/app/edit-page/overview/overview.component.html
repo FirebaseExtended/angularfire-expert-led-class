@@ -4,6 +4,7 @@
     label="Relevant Work"
     key="relevantWork"
     [list]="overview.relevantWork"
-    (on-change)="updateWork($event)">
+    (on-change)="updateWork($event)"
+    [is-editable]="isEditable">
   </app-list-section>
 </div>

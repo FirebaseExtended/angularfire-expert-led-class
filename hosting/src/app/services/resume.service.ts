@@ -12,11 +12,13 @@ export class ResumeService {
   firestore: Firestore = inject(Firestore);
   auth: Auth = inject(Auth);
 
+  // Create a user observable
   user$ = authState(this.auth).pipe(
     filter(user => user !== null),
     map(user => user!),
   );
 
+  // Create reference observable
   ref$ = this.user$.pipe(
     map(user => {
       const ref = doc(this.firestore, 'resumes', user.uid) as DocumentReference<ResumeSnap>;
@@ -24,6 +26,7 @@ export class ResumeService {
     })
   );
 
+  // Create an observable of the current user's resume
   current$ = this.ref$.pipe(
     switchMap(({user, ref }) => {
       const resume$ = docData(ref, { idField: 'id' })
@@ -33,10 +36,10 @@ export class ResumeService {
       }));
     })
   )
-  
+
+  // Create an update method for the current user's resume
   async updateCurrent(resume: Partial<Resume>) {
     const { ref } = await firstValueFrom(this.ref$);
-    console.log({ ref });
     return setDoc(ref, resume, { merge: true });
   }
 

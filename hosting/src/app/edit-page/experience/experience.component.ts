@@ -8,6 +8,7 @@ import { Details, Experience, Resume } from 'src/app/models/resume.model';
 export class ExperienceComponent {
   @Input() experience: Experience[] = [];
   @Output('on-change') onChange = new EventEmitter<Partial<Resume>>();
+  @Input('is-editable') isEditable = false;
 
   delete(index: number) {
     this.experience = this.experience.filter((e, i) => index !== i);

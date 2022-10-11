@@ -1,10 +1,11 @@
+
 <div class="action-bar">
   <h3>EXPERIENCE</h3>
-  <button (click)="add()" class="add">Add</button>
+  <button (click)="add()" class="add" *ngIf="isEditable">Add</button>
 </div>
 
 <div class="edit-card" *ngFor="let ex of experience; let i = index" [attr.data-index]="i">
-  <div>
+  <div *ngIf="isEditable">
     <button (click)="delete(i)">Delete</button>
   </div>
   <div>
@@ -12,14 +13,16 @@
       [title]="ex.title"
       [startDate]="ex.startDate"
       [endDate]="ex.endDate"
-      (on-change)="updateDetails($event, i)">
+      (on-change)="updateDetails($event, i)"
+      [is-editable]="isEditable">
     </app-details>
 
     <app-list-section
       label="Relevant Work"
       key="relevantWork"
       [list]="ex.relevantWork"
-      (on-change)="updateWork($event, i)">
+      (on-change)="updateWork($event, i)"
+      [is-editable]="isEditable">
     </app-list-section>
   </div>
 </div>

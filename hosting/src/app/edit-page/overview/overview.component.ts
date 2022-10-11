@@ -8,7 +8,9 @@ import { Overview, Resume } from 'src/app/models/resume.model';
 })
 export class OverviewComponent {
   @Input() overview: Overview = { relevantWork: [] };
+  @Input('is-editable') isEditable = false;
   @Output('on-change') onChange = new EventEmitter<Partial<Resume>>();
+
 
   updateWork(update: { relevantWork: string[] }) {
     this.onChange.next({ overview: update });

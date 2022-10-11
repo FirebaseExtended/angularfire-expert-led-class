@@ -1,4 +1,4 @@
-<form #listForm="ngForm">
+<form #listForm="ngForm" *ngIf="isEditable else readonly">
   <h5>{{label}}</h5>
   <div class="form-group">
     <input
@@ -20,3 +20,14 @@
     </li>
   </ul>
 </form>
+
+<ng-template #readonly>
+  <h5>{{label}}</h5>
+  <ul class="list">
+    <li class="item" *ngFor="let item of list">
+      <div>
+        <span>{{ item }}</span>
+      </div>
+    </li>
+  </ul>
+</ng-template>

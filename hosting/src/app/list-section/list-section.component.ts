@@ -11,6 +11,7 @@ export class ListSectionComponent {
   @Input() label!: string;
   @Input() key!: string;
   @Input() placeholder: string = '';
+  @Input('is-editable') isEditable = false;
 
   newItem = '';
   

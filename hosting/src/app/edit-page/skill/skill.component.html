@@ -1,4 +1,4 @@
-<form #skillForm="ngForm">
+<form #skillForm="ngForm" *ngIf="isEditable else readonly">
   <h5>SKILLS</h5>
   <div class="form-group">
     <input
@@ -18,3 +18,12 @@
     </div>
   </div>
 </form>
+
+<ng-template #readonly>
+  <h5>SKILLS</h5>
+  <div class="skill-list">
+    <div class="skill-tag" *ngFor="let skill of skills">
+      <span>{{ skill }}</span>
+    </div>
+  </div>
+</ng-template>

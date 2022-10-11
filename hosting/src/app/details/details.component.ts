@@ -18,6 +18,7 @@ export class DetailsComponent {
   @Input() title: string = '';
   @Input() startDate: Date = new Date();
   @Input() endDate: Date = new Date();
+  @Input('is-editable') isEditable: boolean = false;
 
   newDetails!: Details;
 
