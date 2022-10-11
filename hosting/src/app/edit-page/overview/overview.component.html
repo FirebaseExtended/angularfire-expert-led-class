@@ -1,0 +1,9 @@
+<h3>Overview</h3>
+<div class="edit-card">
+  <app-list-section
+    label="Relevant Work"
+    key="relevantWork"
+    [list]="overview.relevantWork"
+    (on-change)="updateWork($event)">
+  </app-list-section>
+</div>

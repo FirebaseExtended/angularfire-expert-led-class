@@ -1,0 +1,22 @@
+<form #listForm="ngForm">
+  <h5>{{label}}</h5>
+  <div class="form-group">
+    <input
+      type="text"
+      name="item"
+      class="form-control"
+      [(ngModel)]="newItem"
+      [placeholder]="placeholder"
+      required
+    />
+    <button (click)="onAdd()" [disabled]="!listForm.form.valid">+ Add</button>
+  </div>
+  <ul class="list">
+    <li class="item" *ngFor="let item of list">
+      <div>
+        <span>{{ item }}</span>
+        <button (click)="onRemove(item)">x</button>
+      </div>
+    </li>
+  </ul>
+</form>

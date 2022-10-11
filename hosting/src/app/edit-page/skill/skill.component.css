@@ -1,0 +1,39 @@
+form {
+  display: grid;
+  gap: 8px;
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.skill-tag {
+  background: var(--black-9);
+  color: var(--theme-text-on-dark);
+  padding: 4px 6px;
+  font-size: .75rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.skill-tag:hover {
+  background: var(--color-8);
+}
+
+.skill-tag button {
+  background: none;
+  cursor: pointer;
+  border: 0;
+  font-size: .75rem;
+  color: var(--theme-text-on-dark);
+}
+
+/* .ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948;
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442;
+} */

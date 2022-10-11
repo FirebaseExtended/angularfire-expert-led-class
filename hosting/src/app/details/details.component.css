@@ -1,0 +1,23 @@
+:host {
+  padding-block: 0px 32px;
+  display: block;
+}
+
+form {
+  display: grid;
+  gap: 16px;
+}
+
+.detail-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-control {
+  display: flex;
+  align-items: flex-end;
+}
+
+.form-control label {
+  width: 120px;
+}

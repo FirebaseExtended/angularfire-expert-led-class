@@ -16,8 +16,30 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+// should update docs for v9
+import { redirectLoggedInTo, redirectUnauthorizedTo, AuthGuard } from '@angular/fire/auth-guard';
 
-const routes: Routes = [];
+import { LoginPageComponent } from './login-page/login-page.component';
+import { EditPageComponent } from './edit-page/edit-page.component';
+import { ResumeResolver, ResumeStreamResolver } from './resume.resolver';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+const redirectLoggedInToEdit = () => redirectLoggedInTo(['edit']);
+
+const routes: Routes = [
+  { 
+    path: 'edit', 
+    component: EditPageComponent,     
+    canActivate: [AuthGuard], 
+    data: { authGuardPipe: redirectUnauthorizedToLogin },
+    resolve: {
+      vm: ResumeResolver,
+      vm$: ResumeStreamResolver,
+    }
+  },
+  { path: 'login', component: LoginPageComponent,        canActivate: [AuthGuard], data: { authGuardPipe: redirectLoggedInToEdit }},
+  { path: '', component: LoginPageComponent,        canActivate: [AuthGuard], data: { authGuardPipe: redirectLoggedInToEdit }}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {

@@ -1,0 +1,66 @@
+<form #details="ngForm" class="form-group">
+  
+  <div class="detail-row">
+    <div class="form-control">
+      <label>Title</label>
+      <input
+        name="experience-title"
+        type="text"
+        class="form-control"
+        [(ngModel)]="newDetails.title"
+        (change)="onUpdate()"
+      />
+    </div>
+  </div>
+
+  <div class="detail-row">
+    <mat-form-field appearance="fill">
+      <mat-label>Choose a date</mat-label>
+      <input 
+        matInput 
+        [(ngModel)]="newDetails.startDate" 
+        [value]="newDetails.startDate"
+        name="startDate" 
+        [matDatepicker]="startPicker"
+        (dateChange)="onUpdate()">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Choose a date</mat-label>
+      <input 
+        matInput 
+        [(ngModel)]="newDetails.endDate" 
+        name="endDate" 
+        [matDatepicker]="endPicker"
+        (dateChange)="onUpdate()">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- <div class="form-control">
+      <label>Start Date</label>
+      <input
+        name="experience-startDate"
+        class="form-control"
+        type="text"
+        [(ngModel)]="newDetails.startDate"
+        (change)="onUpdate()"
+      />
+    </div> -->
+    <!-- <div class="form-control">
+      <label>End Date</label>
+      <input
+        name="experience-endDate"
+        class="form-control"
+        type="text"
+        [(ngModel)]="newDetails.endDate"
+        (change)="onUpdate()"
+      />  
+    </div> -->
+  </div>
+
+</form>

@@ -1,0 +1,20 @@
+<form #skillForm="ngForm">
+  <h5>SKILLS</h5>
+  <div class="form-group">
+    <input
+      type="text"
+      name="skill"
+      class="form-control"
+      [(ngModel)]="newSkill"
+      placeholder="Enter a skill"
+      required
+    />
+    <button (click)="onAdd()" [disabled]="!skillForm.form.valid">+ Add</button>
+  </div>
+  <div class="skill-list">
+    <div class="skill-tag" *ngFor="let skill of skills">
+      <span>{{ skill }}</span>
+      <button (click)="onRemove(skill)">x</button>
+    </div>
+  </div>
+</form>

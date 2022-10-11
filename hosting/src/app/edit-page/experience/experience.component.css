@@ -1,0 +1,9 @@
+:host {
+  display: grid;
+  gap: 64px;
+}
+
+h3 {
+  margin-block-end: -32px;
+}
+

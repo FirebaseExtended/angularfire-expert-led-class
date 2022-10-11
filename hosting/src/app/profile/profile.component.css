@@ -1,0 +1,14 @@
+:host {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+
+img, .default {
+  background-color: var(--theme-surface-dark);
+  height: 96px;
+  width: 96px;
+  border-radius: 100%;
+  position: absolute;
+  left: -132px;
+}

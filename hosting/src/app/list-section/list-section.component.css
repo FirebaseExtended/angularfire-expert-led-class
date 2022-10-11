@@ -1,0 +1,21 @@
+form {
+  display: grid;
+  gap: 8px;
+}
+
+.list {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  list-style-type: square;
+}
+
+.item {
+  list-style-type: square;
+}
+
+.item div {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}

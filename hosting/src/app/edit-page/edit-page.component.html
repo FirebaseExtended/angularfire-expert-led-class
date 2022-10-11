@@ -1,0 +1,27 @@
+<main>
+  <app-profile [user]="vm.user"></app-profile>
+  
+  <app-skill 
+    [skills]="vm.resume.skills"
+    (on-change)="onUpdate($event)">
+  </app-skill>
+
+  <app-overview 
+    [overview]="vm.resume.overview"
+    (on-change)="onUpdate($event)">
+  </app-overview>
+
+  <app-experience 
+    [experience]="vm.resume.experience"
+    (on-change)="onUpdate($event)">
+  </app-experience>
+</main>
+
+  <!-- <app-name-title [nameTitle]="vm.resume.nameTitle"></app-name-title>
+  <app-skill [skills]="(vm$ | async)!.resume.skills"></app-skill>
+  <app-about [about]="(vm$ | async)!.resume.about"></app-about>
+  <app-overview [overview]="(vm$ | async)!.resume.overview"></app-overview>
+  <app-experience [experience]="(vm$ | async)!.resume.experience"></app-experience>
+  <app-education [education]="(vm$ | async)!.resume.education"></app-education>
+  <app-one-thing [oneThing]="(vm$ | async)!.resume.oneThing"></app-one-thing> -->
+

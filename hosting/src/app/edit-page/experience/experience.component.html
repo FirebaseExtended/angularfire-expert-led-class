@@ -1,0 +1,25 @@
+<div class="action-bar">
+  <h3>EXPERIENCE</h3>
+  <button (click)="add()" class="add">Add</button>
+</div>
+
+<div class="edit-card" *ngFor="let ex of experience; let i = index" [attr.data-index]="i">
+  <div>
+    <button (click)="delete(i)">Delete</button>
+  </div>
+  <div>
+    <app-details
+      [title]="ex.title"
+      [startDate]="ex.startDate"
+      [endDate]="ex.endDate"
+      (on-change)="updateDetails($event, i)">
+    </app-details>
+
+    <app-list-section
+      label="Relevant Work"
+      key="relevantWork"
+      [list]="ex.relevantWork"
+      (on-change)="updateWork($event, i)">
+    </app-list-section>
+  </div>
+</div>
