@@ -97,6 +97,7 @@ export class ResumeService {
   }
 
   async updateArrayInResume(resumeId: string, update: ResumeListUpdate) {
+    debugger;
     const { key, item, type } = update;
     const updateObject = {
       [`${key}`]: type === 'added' ? arrayUnion(item) : arrayRemove(item)

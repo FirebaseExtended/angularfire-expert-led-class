@@ -14,8 +14,8 @@
  limitations under the License.
  */
 
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Overview, Resume } from 'src/app/models/resume.model';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Overview, OverviewUpdate } from 'src/app/models/resume.model';
 
 @Component({
   selector: 'app-overview',
@@ -23,15 +23,11 @@ import { Overview, Resume } from 'src/app/models/resume.model';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
-  @Input() overview?: Overview;
+  @Input() overview!: string[];
   @Input('is-editable') isEditable = false;
-  @Output('on-change') onChange = new EventEmitter<Partial<Resume>>();
+  @Output('on-change') onChange = new EventEmitter<OverviewUpdate>();
 
-  ngOnInit() {
-    this.overview = this.overview || { relevantWork: [] };
-  }
-
-  updateWork(update: { relevantWork: string[] }) {
-    this.onChange.next({ overview: update });
+  updateWork(update: OverviewUpdate) {
+    this.onChange.next(update);
   }
 }

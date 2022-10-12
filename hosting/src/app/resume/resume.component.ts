@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Resume, ResumeUser, SkillUpdate } from '../models/resume.model';
+import { Resume, ResumeListUpdate, ResumeUser, SkillUpdate } from '../models/resume.model';
 
 @Component({
   selector: 'app-resume',
@@ -11,10 +11,14 @@ export class ResumeComponent {
   @Input() resume!: Partial<Resume>;
   @Input('is-editable') isEditable = false;
   @Output('resume-update') onResumeUpdate = new EventEmitter<Partial<Resume>>();
-  @Output('list-added') onListAdded = new EventEmitter<SkillUpdate>();
+  @Output('list-added') onListAdded = new EventEmitter<ResumeListUpdate>();
 
   onUpdate(update: Partial<Resume>) {
     this.onResumeUpdate.emit(update);
+  }
+
+  onListUpdate(update: ResumeListUpdate) {
+    this.onListAdded.emit(update);
   }
 
   listAdded(update: SkillUpdate) {

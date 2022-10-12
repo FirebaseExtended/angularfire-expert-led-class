@@ -1,14 +1,14 @@
 <app-profile [user]="user"></app-profile>
   
 <app-skill 
-  [skills]="resume.skills"
-  (skill-change)="listAdded($event)"
+  [skills]="resume.skills || []"
+  (skill-change)="onListUpdate($event)"
   [is-editable]="isEditable">
 </app-skill>
 
 <app-overview 
-  [overview]="resume.overview"
-  (on-change)="onUpdate($event)"
+  [overview]="resume.overview || []"
+  (on-change)="onListUpdate($event)"
   [is-editable]="isEditable">
 </app-overview>
 

@@ -15,6 +15,7 @@
  */
 
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ListUpdate } from '../models/resume.model';
 
 @Component({
   selector: 'app-list-section',
@@ -22,8 +23,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./list-section.component.css']
 })
 export class ListSectionComponent {
-  @Output('on-change') onChange = new EventEmitter<any>();
-  @Input() list: string[] = []
+  @Output('on-change') onChange = new EventEmitter<ListUpdate<any>>();
+  @Input() list!: string[];
   @Input() label!: string;
   @Input() key!: string;
   @Input() placeholder: string = '';
@@ -32,13 +33,11 @@ export class ListSectionComponent {
   newItem = '';
   
   onAdd() {
-    this.list = [...this.list, this.newItem];
+    this.onChange.emit({ key: this.key, item: this.newItem, type: 'added' });
     this.newItem = '';
-    this.onChange.emit({ [`${this.key}`]: this.list });
   }
 
-  onRemove(skillToDelete: string) {
-    this.list = this.list.filter(skill => skill !== skillToDelete);
-    this.onChange.emit({ [`${this.key}`]: this.list });
+  onRemove(item: string) {
+    this.onChange.emit({ key: this.key, item, type: 'removed' });
   }
 }

@@ -24,14 +24,10 @@ import { SkillUpdate } from 'src/app/models/resume.model';
 })
 export class SkillComponent {
   @Output('skill-change') onSkillChange = new EventEmitter<SkillUpdate>();
-  @Input() skills?: string[];
+  @Input() skills!: string[];
   @Input('is-editable') isEditable = false;
   newSkill = '';
 
-  ngOnInit() {
-    this.skills = this.skills || [];
-  }
-  
   onAdd() {
     this.onSkillChange.emit({ 
       key: 'skills', 

@@ -18,8 +18,8 @@
 <div class="edit-card">
   <app-list-section
     label="Relevant Work"
-    key="relevantWork"
-    [list]="overview!.relevantWork"
+    key="overview"
+    [list]="overview"
     (on-change)="updateWork($event)"
     [is-editable]="isEditable">
   </app-list-section>

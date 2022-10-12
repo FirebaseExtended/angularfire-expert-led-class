@@ -79,7 +79,7 @@ type BaseResume = {
   id: string;
   nameTitle: NameTitle;
   about: About;
-  overview: Overview;
+  overview: string[];
   education: Education[];
   oneThing: OneThing;
   skills: string[];
