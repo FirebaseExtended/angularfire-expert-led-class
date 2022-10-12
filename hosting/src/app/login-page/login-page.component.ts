@@ -14,17 +14,17 @@
  limitations under the License.
  */
 
-import { Component, inject, OnInit } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core';
 import {
   Auth,
   GoogleAuthProvider,
   signInAnonymously,
-  signInWithPopup,
-  signOut,
+  signInWithRedirect,
   User,
-  user,
-} from '@angular/fire/auth'
-import { doc, Firestore, setDoc } from '@angular/fire/firestore'
+  getRedirectResult,
+  authState,
+} from '@angular/fire/auth';
+import { doc, Firestore, setDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-login-page',
@@ -32,23 +32,23 @@ import { doc, Firestore, setDoc } from '@angular/fire/firestore'
   styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent implements OnInit {
-  private auth: Auth = inject(Auth)
-  private firestore: Firestore = inject(Firestore)
-  user$ = user(this.auth)
-  private provider = new GoogleAuthProvider()
+  private auth: Auth = inject(Auth);
+  private firestore: Firestore = inject(Firestore);
+  user$ = authState(this.auth);
+  private provider = new GoogleAuthProvider();
   constructor() {}
 
   ngOnInit(): void {}
 
   private updateUserData(user: User) {
-    const userRef = doc(this.firestore, `users/${user.uid}`)
+    const userRef = doc(this.firestore, `users/${user.uid}`);
     const appUser: Partial<User> = {
       uid: user.uid!,
       displayName: user.displayName!,
       email: user.email!,
       photoURL: user.photoURL!,
-    }
-    return setDoc(userRef, appUser, { merge: true })
+    };
+    return setDoc(userRef, appUser, { merge: true });
   }
 
   loginGuest() {
@@ -56,18 +56,9 @@ export class LoginPageComponent implements OnInit {
   }
 
   login() {
-    signInWithPopup(this.auth, this.provider).then((result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result)
-      this.updateUserData(result.user)
-    })
-  }
-  logout() {
-    signOut(this.auth)
-      .then(() => {
-        console.log('signed out')
-      })
-      .catch((error) => {
-        console.log('sign out error: ' + error)
-      })
+    signInWithRedirect(this.auth, this.provider);
+    getRedirectResult(this.auth).then((result) => {
+      this.updateUserData(result!.user);
+    });
   }
 }

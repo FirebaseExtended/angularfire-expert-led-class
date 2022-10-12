@@ -15,6 +15,7 @@
  */
 
 import { Component, inject } from '@angular/core';
+import { Auth, authState, signOut } from '@angular/fire/auth';
 import { ResumeService } from '../services/resume.service';
 
 @Component({
@@ -24,5 +25,13 @@ import { ResumeService } from '../services/resume.service';
 })
 export class HeaderComponent {
   resumeService: ResumeService = inject(ResumeService);
-  user$ = this.resumeService.user$;
+  private auth: Auth = inject(Auth);
+  user$ = authState(this.auth)
+
+  logout() {
+    signOut(this.auth)
+      .catch((error) => {
+        console.log('sign out error: ' + error);
+      });
+  }
 }

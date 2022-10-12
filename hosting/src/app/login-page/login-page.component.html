@@ -14,12 +14,14 @@
  limitations under the License.
  -->
 
-<div *ngIf="user$ | async as user; else showLogin">
-  <h1>Hello {{ user$ }}!</h1>
-  <button (click)="logout()">Logout</button>
-</div>
-<ng-template #showLogin>
-  <p>Please login.</p>
-  <button (click)="login()">Login with Google</button>
-  <button (click)="loginGuest()">Login as a Guest</button>
-</ng-template>
+ <main>
+  <div *ngIf="user$ | async as user else showLogin">
+    <h1 class="title">{{ user.displayName }}</h1>
+  </div>
+  <ng-template #showLogin>
+    <h1 class="title">FireResume</h1>
+    <h2 class="description">A Firebase Summit Workshop</h2>
+    <button class="login-button" (click)="login()">Google Login</button>
+    <button class="login-button" (click)="loginGuest()">Guest Login</button>
+  </ng-template>
+</main>
