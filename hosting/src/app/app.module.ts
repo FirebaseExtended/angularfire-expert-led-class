@@ -42,6 +42,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommentsComponent } from './comments/comments.component';
 import { ResumeService } from './services/resume.service';
+import { ResumeComponent } from './resume/resume.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { ResumeService } from './services/resume.service';
     ListSectionComponent,
     DetailsComponent,
     CommentsComponent,
+    ResumeComponent,
   ],
   imports: [
     BrowserModule,

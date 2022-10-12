@@ -32,17 +32,15 @@ export class EditPageComponent {
   comments$ = this.resumeService.comments$(this.routeId);
 
   onUpdate(update: Partial<Resume>) {
-    update.id = this.vm.resume.id;
+    update.id = this.routeId;
     this.resumeService.updateCurrent(update);
   }
 
   addComment(comment: CommentUpdate) {
-    comment.resumeId = this.vm.resume.id!;
     this.resumeService.addComment(comment);
   }
 
   deleteComment(comment: Comment) {
-    comment.resumeId = this.vm.resume.id!;
     this.resumeService.deleteComment(comment);
   }
 }

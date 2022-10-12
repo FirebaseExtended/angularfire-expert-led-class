@@ -1,0 +1,19 @@
+<app-profile [user]="user"></app-profile>
+  
+<app-skill 
+  [skills]="resume.skills"
+  (on-change)="onUpdate($event)"
+  [is-editable]="isEditable">
+</app-skill>
+
+<app-overview 
+  [overview]="resume.overview"
+  (on-change)="onUpdate($event)"
+  [is-editable]="isEditable">
+</app-overview>
+
+<app-experience 
+  [experience]="resume.experience"
+  (on-change)="onUpdate($event)"
+  [is-editable]="isEditable">
+</app-experience>

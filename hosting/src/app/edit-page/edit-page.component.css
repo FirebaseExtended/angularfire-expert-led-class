@@ -6,9 +6,7 @@
 }
 
 main {
-  display: grid;
   grid-column: main;
-  gap: 56px;
 }
 
 aside {

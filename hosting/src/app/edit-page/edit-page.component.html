@@ -1,28 +1,15 @@
 <main>
-  <app-profile [user]="vm.user"></app-profile>
-  
-  <app-skill 
-    [skills]="vm.resume.skills"
-    (on-change)="onUpdate($event)"
-    [is-editable]="true">
-  </app-skill>
-
-  <app-overview 
-    [overview]="vm.resume.overview"
-    (on-change)="onUpdate($event)"
-    [is-editable]="true">
-  </app-overview>
-
-  <app-experience 
-    [experience]="vm.resume.experience"
-    (on-change)="onUpdate($event)"
-    [is-editable]="true">
-  </app-experience>
+  <app-resume
+    [is-editable]="true"
+    [user]="vm.user"
+    [resume]="vm.resume"
+    (resume-update)="onUpdate($event)">
+  </app-resume>
 </main>
 
 <aside>
   <app-comments
-    [resume-id]="vm.resume.id!"
+    [resume-id]="routeId"
     [comments]="(comments$ | async)!"
     [user]="vm.user"
     (on-comment)="addComment($event)"
