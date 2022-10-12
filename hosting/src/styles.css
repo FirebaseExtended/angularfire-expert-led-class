@@ -18,6 +18,7 @@
   --hue: 202;
   --white: hsl(0, 0%, 0%);
   --off-white: hsl(0, 0%, 96%);
+  --black-1: hsl(var(--hue), 0%, 81%);
   --black-2: hsl(var(--hue), 0%, 32%);
   --black-3: hsl(var(--hue), 0%, 44%);
   --black-4: hsl(var(--hue), 0%, 25%);
@@ -92,6 +93,7 @@ h3 {
   color: var(--theme-text-md);
   font: var(--font-heading-md);
   letter-spacing: 0.25px;
+  padding-inline-start: 16px;
 }
 
 h5 {
@@ -111,17 +113,32 @@ input[type='text'] {
 
 button {
   border: 1px solid var(--color-6);
-  padding: 2px 6px;
+  padding: 2px 8px;
   position: relative;
   background: none;
   border-radius: 2px;
   cursor: pointer;
 }
 
+button[disabled] {
+  cursor: not-allowed;
+}
+
 button.add::before {
   content: '+';
   position: relative;
   left: 0;
+}
+
+button.large {
+  color: var(--off-white);
+  padding: 8px 32px;
+  background-color: var(--color-6);
+  border: 0;
+}
+
+button.large[disabled] {
+  background-color: var(--black-4);
 }
 
 .form-group {
@@ -137,13 +154,12 @@ button.add::before {
 
 .edit-card {
   background: white;
-  margin: -16px;
   padding: 16px;
   border-radius: 4px;
+  border: 1px solid var(--black-1);
 }
 
 .action-bar {
   display: flex;
   justify-content: space-between;
-  margin-block-end: -32px;
 }

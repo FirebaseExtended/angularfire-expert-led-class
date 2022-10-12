@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ViewModel, Resume, CommentUpdate } from '../models/resume.model';
+import { ViewModel, Resume, CommentUpdate, Comment } from '../models/resume.model';
 import { ActivatedRoute } from '@angular/router';
 import { ResumeService } from '../services/resume.service';
 
@@ -20,5 +20,9 @@ export class EditPageComponent {
 
   addComment(comment: CommentUpdate) {
     this.resumeService.addComment(comment);
+  }
+
+  deleteComment(comment: Comment) {
+    this.resumeService.deleteComment(comment);
   }
 }

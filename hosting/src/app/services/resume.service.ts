@@ -1,3 +1,19 @@
+/*
+ Copyright 2022 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
 import { inject, Injectable } from '@angular/core'
 import { Auth, authState } from '@angular/fire/auth'
 import { map, switchMap, firstValueFrom, filter } from 'rxjs'
@@ -12,6 +28,7 @@ import {
   Firestore,
   setDoc,
   addDoc,
+  deleteDoc,
 } from '@angular/fire/firestore'
 
 @Injectable({
@@ -62,13 +79,28 @@ export class ResumeService {
   currentComments$ = this.commentRef$.pipe(
     switchMap(({ ref, user }) => {
       const comments$ = collectionData(ref as CollectionReference<Comment>, { idField: 'id' })
-      return comments$.pipe(map((comments) => ({ comments, user })))
+      return comments$.pipe(map((comments) => {
+        comments = comments!.map(comment => {
+          return {
+            ...comment,
+            timeDisplay: new Intl.DateTimeFormat('en', { dateStyle: 'short', timeStyle: 'short' })
+              .format(comment.timestamp?.toDate()),
+          };
+        });
+        return { comments, user }
+      }))
     }),
   )
 
   async addComment(comment: CommentUpdate) {
     const { ref } = await firstValueFrom(this.commentRef$)
-    addDoc(ref as CollectionReference<CommentUpdate>, comment)
+    return addDoc(ref as CollectionReference<CommentUpdate>, comment)
+  }
+
+  async deleteComment(comment: Comment) {
+    const { ref } = await firstValueFrom(this.commentRef$)
+    const commentDoc = doc<Comment | CommentUpdate>(ref, comment.id);
+    return deleteDoc(commentDoc);
   }
 
   // Create an update method for the current user's resume
@@ -78,7 +110,7 @@ export class ResumeService {
   }
 
   private setDefaults(resume: ResumeSnap): Resume {
-    resume.experience = resume.experience || []
+    // resume.experience = resume.experience || []
     const experience = resume.experience.map((experience) => {
       return {
         title: experience?.title,

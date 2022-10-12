@@ -1,25 +1,62 @@
-<form #commentForm="ngForm">
+<!--
+ Copyright 2022 Google LLC
 
-  <div class="">
-    <textarea #message required></textarea>
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+
+<h5>Comments</h5>
+<form #commentForm="ngForm">
+  <textarea 
+    #message 
+    required
+    name="message"
+    placeholder="Enter a comment"
+    [(ngModel)]="newMessage">
+  </textarea>
+  <div>
     <button 
-      [disabled]="commentForm.valid" 
-      (click)="send(message.value)">
+      class="large"
+      [disabled]="!commentForm.form.valid" 
+      (click)="send()">
       Send
     </button>
   </div>
-
-  <ul>
-    <li *ngFor="let comment of comments">
-      <div>
-        <img [src]="comment.photoURL" [alt]="comment.displayName">
-        <div>{{ comment.displayName }}</div>
-        <div>{{ comment.timestamp.toDate() }}</div>
-      </div>
-      <div>
-        {{ comment.text }}
-      </div>
-    </li>
-  </ul>
-
 </form>
+
+<ul class="comment-list">
+  <li class="comment-item" *ngFor="let comment of comments">
+    <header class="comment-header">
+      <div class="comment-user">
+        <img 
+          [src]="comment.photoURL" 
+          [alt]="comment.displayName" 
+          *ngIf="comment.photoURL != null else blank">
+        <div class="comment-user-details">
+          <div class="comment-name">{{ comment.displayName }}</div>
+          <div class="comment-time">{{ comment?.timeDisplay }}</div>
+        </div>
+      </div>
+      <div class="comment-action">
+        <button (click)="delete(comment)">x</button>
+      </div>
+    </header>
+
+    <div class="comment-text">
+      {{ comment.text }}
+    </div>
+  </li>
+</ul>
+
+<ng-template #blank>
+  <div class="blank-image"></div>
+</ng-template>

@@ -24,6 +24,7 @@
   <app-comments
     [comments]="(comments$ | async)?.comments"
     [user]="vm.user"
-    (on-comment)="addComment($event)">
+    (on-comment)="addComment($event)"
+    (on-delete)="deleteComment($event)">
   </app-comments>
 </aside>
