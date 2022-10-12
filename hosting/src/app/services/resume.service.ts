@@ -29,6 +29,8 @@ import {
   setDoc,
   addDoc,
   deleteDoc,
+  query,
+  orderBy,
 } from '@angular/fire/firestore'
 
 @Injectable({
@@ -76,7 +78,11 @@ export class ResumeService {
 
   comments$(resumeId: string) {
     const commentsRef = this.commentsRef<Comment>(resumeId);
-    const comments$ = collectionData(commentsRef, { idField: 'id' });
+    const commentsOrderedQuery = query(
+      commentsRef,
+      orderBy('timestamp'),
+    );
+    const comments$ = collectionData(commentsOrderedQuery, { idField: 'id' });
     return comments$.pipe(
       map(comments => this.setCommentDefaults(comments))
     );

@@ -43,7 +43,7 @@ export class CommentsComponent implements OnInit {
       displayName: this.user.displayName || 'Anonymous User',
       timestamp: serverTimestamp(),
       text: this.newMessage,
-      resumeId: '',
+      resumeId: this.resumeId,
     });
     this.newMessage = '';
   }
