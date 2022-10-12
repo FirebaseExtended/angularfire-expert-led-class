@@ -17,6 +17,12 @@
 import type { User } from "firebase/auth";
 import { DocumentReference, Timestamp, FieldValue } from "firebase/firestore";
 
+export type ListUpdate<T> = { key: T, item: string, type: 'added' | 'removed' }
+export type SkillUpdate = ListUpdate<'skills'>;
+export type ExperienceUpdate = ListUpdate<'experience'>;
+export type OverviewUpdate = ListUpdate<'overview'>;
+export type ResumeListUpdate = SkillUpdate | OverviewUpdate | ExperienceUpdate;
+
 export type ResumeUser = {
   photoURL: string | null;
   displayName: string | null;

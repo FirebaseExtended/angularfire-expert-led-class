@@ -15,7 +15,7 @@
  */
 
 import { Component, inject } from '@angular/core';
-import { Resume, CommentUpdate, Comment } from '../models/resume.model';
+import { Resume, CommentUpdate, Comment, ListUpdate, SkillUpdate, OverviewUpdate, ExperienceUpdate, ResumeListUpdate } from '../models/resume.model';
 import { ActivatedRoute } from '@angular/router';
 import { ResumeService } from '../services/resume.service';
 import { startWith } from 'rxjs';
@@ -44,13 +44,8 @@ export class EditPageComponent {
     this.resumeService.updateCurrent(update);
   }
 
-  onArrayAdd(update: { key: 'skills', item: string, type: 'added' | 'removed' }) {
-    const { key, item } = update;
-    this.resumeService.updateListInResume({
-      key,
-      item,
-      resumeId: this.routeId,
-    });
+  onArrayAdd(update: ResumeListUpdate) {
+    this.resumeService.updateArrayInResume(this.routeId, update);
   }
 
   addComment(comment: CommentUpdate) {

@@ -15,7 +15,7 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Resume } from 'src/app/models/resume.model';
+import { SkillUpdate } from 'src/app/models/resume.model';
 
 @Component({
   selector: 'app-skill',
@@ -23,8 +23,7 @@ import { Resume } from 'src/app/models/resume.model';
   styleUrls: ['./skill.component.css'],
 })
 export class SkillComponent {
-  @Output('on-change') onChange = new EventEmitter<Partial<Resume>>();
-  @Output('skill-change') onSkillChange = new EventEmitter<{ key: 'skills', item: string, type: 'added' | 'removed' }>();
+  @Output('skill-change') onSkillChange = new EventEmitter<SkillUpdate>();
   @Input() skills?: string[];
   @Input('is-editable') isEditable = false;
   newSkill = '';
@@ -34,13 +33,19 @@ export class SkillComponent {
   }
   
   onAdd() {
-    debugger;
-    this.onSkillChange.emit({ key: 'skills', item: this.newSkill, type: 'added' });
+    this.onSkillChange.emit({ 
+      key: 'skills', 
+      item: this.newSkill, 
+      type: 'added' 
+    });
     this.newSkill = '';
   }
 
   onRemove(skillToDelete: string) {
-    this.skills = this.skills!.filter(skill => skill !== skillToDelete);
-    this.onChange.emit({ skills: this.skills });
+    this.onSkillChange.emit({ 
+      key: 'skills', 
+      item: skillToDelete, 
+      type: 'removed' 
+    });
   }
 }

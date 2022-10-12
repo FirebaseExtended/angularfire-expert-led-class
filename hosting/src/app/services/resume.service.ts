@@ -17,7 +17,7 @@
 import { inject, Injectable } from '@angular/core'
 import { Auth, authState } from '@angular/fire/auth'
 import { map, filter } from 'rxjs'
-import { Resume, ResumeSnap, Comment, CommentUpdate } from '../models/resume.model'
+import { Resume, ResumeSnap, Comment, CommentUpdate, ResumeListUpdate } from '../models/resume.model'
 import {
   collection,
   collectionData,
@@ -31,6 +31,7 @@ import {
   query,
   orderBy,
   arrayUnion,
+  arrayRemove,
 } from '@angular/fire/firestore'
 
 @Injectable({
@@ -95,10 +96,10 @@ export class ResumeService {
     return setDoc(resumeRef, resume, { merge: true })
   }
 
-  async updateListInResume(update: { key: string; resumeId: string; item: any }) {
-    const { key, resumeId, item } = update;
+  async updateArrayInResume(resumeId: string, update: ResumeListUpdate) {
+    const { key, item, type } = update;
     const updateObject = {
-      [`${key}`]: arrayUnion(item)
+      [`${key}`]: type === 'added' ? arrayUnion(item) : arrayRemove(item)
     };
     const resumeRef = this.resumeRef(resumeId);
     return setDoc(resumeRef, updateObject, { merge: true });
