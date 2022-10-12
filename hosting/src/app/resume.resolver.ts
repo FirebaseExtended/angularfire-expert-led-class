@@ -15,17 +15,28 @@
  */
 
 import { Injectable, inject } from '@angular/core';
+import { User } from '@angular/fire/auth';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ViewModel } from './models/resume.model';
+import { ResumeViewModel } from './models/resume.model';
 import { ResumeService } from './services/resume.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ResumeResolver implements Resolve<ViewModel> {
+export class ResumeResolver implements Resolve<ResumeViewModel> {
   resumeService = inject(ResumeService);
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ViewModel> {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ResumeViewModel> {
     return this.resumeService.vm$(route.paramMap.get('uid')!);
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserResolver implements Resolve<User> {
+  resumeService = inject(ResumeService);
+  resolve(): Observable<User> {
+    return this.resumeService.user$;
   }
 }

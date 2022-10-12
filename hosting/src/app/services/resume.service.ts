@@ -17,7 +17,7 @@
 import { inject, Injectable } from '@angular/core'
 import { Auth, authState } from '@angular/fire/auth'
 import { map, switchMap, firstValueFrom, filter, withLatestFrom, combineLatestAll, combineLatest, Observable } from 'rxjs'
-import { Resume, ResumeSnap, Comment, CommentUpdate, ViewModel } from '../models/resume.model'
+import { Resume, ResumeSnap, Comment, CommentUpdate, ResumeViewModel as ViewModel } from '../models/resume.model'
 import {
   collection,
   collectionData,
@@ -31,6 +31,7 @@ import {
   deleteDoc,
   query,
   orderBy,
+  arrayUnion,
 } from '@angular/fire/firestore'
 
 @Injectable({
@@ -103,6 +104,16 @@ export class ResumeService {
   async updateCurrent(resume: Partial<Resume>) {
     const resumeRef = this.resumeRef(resume.id!);
     return setDoc(resumeRef, resume, { merge: true })
+  }
+
+  async updateListInResume(update: { key: string; resumeId: string; item: any }) {
+    debugger;
+    const { key, resumeId, item } = update;
+    const updateObject = {
+      [`${key}`]: arrayUnion(item)
+    };
+    const resumeRef = this.resumeRef(resumeId);
+    return setDoc(resumeRef, updateObject, { merge: true });
   }
 
   private setResumeDefaults(resume: Partial<ResumeSnap> = {}): Partial<Resume> {

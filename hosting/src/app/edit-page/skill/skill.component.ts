@@ -24,6 +24,7 @@ import { Resume } from 'src/app/models/resume.model';
 })
 export class SkillComponent {
   @Output('on-change') onChange = new EventEmitter<Partial<Resume>>();
+  @Output('skill-change') onSkillChange = new EventEmitter<{ key: 'skills', item: string, type: 'added' | 'removed' }>();
   @Input() skills?: string[];
   @Input('is-editable') isEditable = false;
   newSkill = '';
@@ -33,9 +34,9 @@ export class SkillComponent {
   }
   
   onAdd() {
-    this.skills = [...this.skills!, this.newSkill];
+    debugger;
+    this.onSkillChange.emit({ key: 'skills', item: this.newSkill, type: 'added' });
     this.newSkill = '';
-    this.onChange.emit({ skills: this.skills });
   }
 
   onRemove(skillToDelete: string) {

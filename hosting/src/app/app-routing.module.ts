@@ -21,15 +21,25 @@ import { redirectLoggedInTo, redirectUnauthorizedTo, AuthGuard } from '@angular/
 
 import { LoginPageComponent } from './login-page/login-page.component';
 import { EditPageComponent } from './edit-page/edit-page.component';
-import { ResumeResolver } from './resume.resolver';
+import { ResumeResolver, UserResolver } from './resume.resolver';
 import { ViewPageComponent } from './view-page/view-page.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToEdit = () => redirectLoggedInTo(['edit']);
 
 const routes: Routes = [
-  { path: '', component: LoginPageComponent,        canActivate: [AuthGuard], data: { authGuardPipe: redirectLoggedInToEdit }},
-  { path: 'login', component: LoginPageComponent,        canActivate: [AuthGuard], data: { authGuardPipe: redirectLoggedInToEdit }},
+  { 
+    path: '', 
+    component: LoginPageComponent, 
+    canActivate: [AuthGuard], 
+    data: { authGuardPipe: redirectLoggedInToEdit }
+  },
+  { 
+    path: 'login', 
+    component: LoginPageComponent, 
+    canActivate: [AuthGuard], 
+    data: { authGuardPipe: redirectLoggedInToEdit }
+  },
   { 
     path: 'edit/:uid', 
     component: EditPageComponent,     
@@ -37,6 +47,7 @@ const routes: Routes = [
     data: { authGuardPipe: redirectUnauthorizedToLogin },
     resolve: {
       vm: ResumeResolver,
+      user: UserResolver,
     }
   },
   { 
@@ -49,9 +60,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    initialNavigation: 'enabledBlocking'
-})],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

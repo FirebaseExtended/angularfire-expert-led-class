@@ -81,7 +81,7 @@ export interface ResumeSnap extends BaseResume {
   experience: SnapExperience[];
 }
 
-export type ViewModel = {
+export type ResumeViewModel = {
   resume: Partial<Resume>;
   user: User;
 }

@@ -15,9 +15,11 @@
  */
 
 import { Component, inject } from '@angular/core';
-import { ViewModel, Resume, CommentUpdate, Comment } from '../models/resume.model';
+import { Resume, CommentUpdate, Comment } from '../models/resume.model';
 import { ActivatedRoute } from '@angular/router';
 import { ResumeService } from '../services/resume.service';
+import { startWith } from 'rxjs';
+import { User } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-edit-page',
@@ -27,13 +29,23 @@ import { ResumeService } from '../services/resume.service';
 export class EditPageComponent {
   private activatedRoute = inject(ActivatedRoute);
   private resumeService = inject(ResumeService);
-  vm: ViewModel = this.activatedRoute.snapshot.data['vm'];
+  user: User = this.activatedRoute.snapshot.data['user'];
   routeId = this.activatedRoute.snapshot.paramMap.get('uid')!;
+  resume$ = this.resumeService.resume$(this.routeId);
   comments$ = this.resumeService.comments$(this.routeId);
 
   onUpdate(update: Partial<Resume>) {
     update.id = this.routeId;
     this.resumeService.updateCurrent(update);
+  }
+
+  onArrayAdd(update: { key: 'skills', item: string, type: 'added' | 'removed' }) {
+    const { key, item } = update;
+    this.resumeService.updateListInResume({
+      key,
+      item,
+      resumeId: this.routeId,
+    });
   }
 
   addComment(comment: CommentUpdate) {
