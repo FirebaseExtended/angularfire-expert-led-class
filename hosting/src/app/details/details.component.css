@@ -31,9 +31,11 @@ form {
 
 .form-control {
   display: flex;
-  align-items: flex-end;
+  align-items: baseline;
+  padding-block: 16px;
 }
 
 .form-control label {
   width: 120px;
+  font-weight: bold;
 }

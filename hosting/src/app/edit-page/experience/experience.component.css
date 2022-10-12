@@ -19,3 +19,8 @@
   gap: 32px;
 }
 
+.delete-bar {
+  display: flex;  
+  justify-content: flex-end;
+}
+
