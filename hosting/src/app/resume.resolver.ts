@@ -17,17 +17,17 @@
 import { Injectable, inject } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { Observable } from 'rxjs';
-import { ResumeViewModel } from './models/resume.model';
+import { Observable, tap } from 'rxjs';
+import { Resume } from './models/resume.model';
 import { ResumeService } from './services/resume.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ResumeResolver implements Resolve<ResumeViewModel> {
+export class ResumeResolver implements Resolve<Partial<Resume>> {
   resumeService = inject(ResumeService);
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ResumeViewModel> {
-    return this.resumeService.vm$(route.paramMap.get('uid')!);
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Partial<Resume>> {
+    return this.resumeService.resume$(route.paramMap.get('uid')!).pipe(tap(console.log));
   }
 }
 

@@ -16,15 +16,14 @@
 
 import { inject, Injectable } from '@angular/core'
 import { Auth, authState } from '@angular/fire/auth'
-import { map, switchMap, firstValueFrom, filter, withLatestFrom, combineLatestAll, combineLatest, Observable } from 'rxjs'
-import { Resume, ResumeSnap, Comment, CommentUpdate, ResumeViewModel as ViewModel } from '../models/resume.model'
+import { map, filter } from 'rxjs'
+import { Resume, ResumeSnap, Comment, CommentUpdate } from '../models/resume.model'
 import {
   collection,
   collectionData,
   CollectionReference,
   doc,
   docData,
-  DocumentReference,
   Firestore,
   setDoc,
   addDoc,
@@ -59,16 +58,6 @@ export class ResumeService {
     const resume$ = docData(ref, { idField: 'id' })
     return resume$.pipe(
       map((resumeSnap) => this.setResumeDefaults(resumeSnap))
-    );
-  }
-
-  // Create a ViewModel observable
-  vm$(resumeId: string): Observable<ViewModel> {
-    return combineLatest([ 
-      this.user$,
-      this.resume$(resumeId),
-    ]).pipe(
-      map(([user, resume]) => ({ user, resume }))
     );
   }
 
@@ -107,7 +96,6 @@ export class ResumeService {
   }
 
   async updateListInResume(update: { key: string; resumeId: string; item: any }) {
-    debugger;
     const { key, resumeId, item } = update;
     const updateObject = {
       [`${key}`]: arrayUnion(item)

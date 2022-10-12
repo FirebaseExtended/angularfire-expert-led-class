@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ResumeViewModel } from '../models/resume.model';
+import { Resume } from '../models/resume.model';
 
 @Component({
   selector: 'app-view-page',
@@ -9,5 +9,5 @@ import { ResumeViewModel } from '../models/resume.model';
 })
 export class ViewPageComponent {
   private activatedRoute = inject(ActivatedRoute);
-  vm: ResumeViewModel = this.activatedRoute.snapshot.data['vm'];
+  resume: Partial<Resume> = this.activatedRoute.snapshot.data['resume'];
 }

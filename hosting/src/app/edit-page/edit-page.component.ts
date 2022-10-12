@@ -36,6 +36,11 @@ export class EditPageComponent {
 
   onUpdate(update: Partial<Resume>) {
     update.id = this.routeId;
+    update.user = {
+      photoURL: this.user.photoURL,
+      displayName: this.user.displayName,
+      uid: this.user.uid,
+    };
     this.resumeService.updateCurrent(update);
   }
 

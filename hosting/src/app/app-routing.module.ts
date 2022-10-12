@@ -46,7 +46,6 @@ const routes: Routes = [
     canActivate: [AuthGuard], 
     data: { authGuardPipe: redirectUnauthorizedToLogin },
     resolve: {
-      vm: ResumeResolver,
       user: UserResolver,
     }
   },
@@ -54,7 +53,7 @@ const routes: Routes = [
     path: 'view/:uid', 
     component: ViewPageComponent,
     resolve: {
-      vm: ResumeResolver,
+      resume: ResumeResolver,
     }
   },
 ];

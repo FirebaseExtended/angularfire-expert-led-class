@@ -15,7 +15,7 @@
  */
 
 import { Component, Input } from '@angular/core';
-import type { User } from 'firebase/auth';
+import { ResumeUser } from '../models/resume.model';
 
 @Component({
   selector: 'app-profile',
@@ -29,5 +29,5 @@ import type { User } from 'firebase/auth';
   styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent {
-  @Input() user!: User;
+  @Input() user!: ResumeUser;
 }

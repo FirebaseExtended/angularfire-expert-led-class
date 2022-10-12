@@ -17,6 +17,12 @@
 import type { User } from "firebase/auth";
 import { DocumentReference, Timestamp, FieldValue } from "firebase/firestore";
 
+export type ResumeUser = {
+  photoURL: string | null;
+  displayName: string | null;
+  uid: string | null;
+}
+
 export type Overview = {
   relevantWork: string[];
 }
@@ -71,6 +77,7 @@ type BaseResume = {
   education: Education[];
   oneThing: OneThing;
   skills: string[];
+  user: ResumeUser;
 }
 
 export interface Resume extends BaseResume {
