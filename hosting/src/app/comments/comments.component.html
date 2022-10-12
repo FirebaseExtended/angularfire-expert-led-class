@@ -3,18 +3,18 @@
   <div class="">
     <textarea #message required></textarea>
     <button 
-      [disabled]="!commentForm.valid" 
+      [disabled]="commentForm.valid" 
       (click)="send(message.value)">
       Send
     </button>
   </div>
 
   <ul>
-    <li *ngFor="let comment in comments">
+    <li *ngFor="let comment of comments">
       <div>
-        <img [src]="comment.photoURL" [alt]="comment.name">
-        <div>{{ comment.name }}</div>
-        <div>{{ comment.time.toDate() }}</div>
+        <img [src]="comment.photoURL" [alt]="comment.displayName">
+        <div>{{ comment.displayName }}</div>
+        <div>{{ comment.timestamp.toDate() }}</div>
       </div>
       <div>
         {{ comment.text }}

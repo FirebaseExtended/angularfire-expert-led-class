@@ -23,8 +23,8 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { provideAuth,getAuth, connectAuthEmulator } from '@angular/fire/auth';
-import { provideFirestore,getFirestore, connectFirestoreEmulator, enableMultiTabIndexedDbPersistence } from '@angular/fire/firestore';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { EditPageComponent } from './edit-page/edit-page.component';
 import { ExperienceComponent } from './edit-page/experience/experience.component';
@@ -42,7 +42,6 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommentsComponent } from './comments/comments.component';
 import { ResumeService } from './services/resume.service';
-import { CommentsService } from './services/comments.service';
 
 @NgModule({
   declarations: [
@@ -60,7 +59,7 @@ import { CommentsService } from './services/comments.service';
     CommentsComponent,
   ],
   imports: [
-    BrowserModule, //.withServerTransition({ appId: 'serverApp' }),
+    BrowserModule,
     MatInputModule,
     BrowserAnimationsModule,
     MatNativeDateModule,
@@ -81,7 +80,6 @@ import { CommentsService } from './services/comments.service';
   ],
   providers: [
     ResumeService,
-    CommentsService,
   ],
   bootstrap: [AppComponent]
 })

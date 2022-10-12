@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ViewModel, Resume } from '../models/resume.model';
+import { ViewModel, Resume, CommentUpdate } from '../models/resume.model';
 import { ActivatedRoute } from '@angular/router';
 import { ResumeService } from '../services/resume.service';
 
@@ -12,8 +12,13 @@ export class EditPageComponent {
   private activatedRoute = inject(ActivatedRoute);
   private resumeService = inject(ResumeService);
   vm: ViewModel = this.activatedRoute.snapshot.data['vm'];
+  comments$ = this.resumeService.currentComments$;
 
   onUpdate(update: Partial<Resume>) {
     this.resumeService.updateCurrent(update);
+  }
+
+  addComment(comment: CommentUpdate) {
+    this.resumeService.addComment(comment);
   }
 }

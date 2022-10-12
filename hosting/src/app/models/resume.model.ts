@@ -1,5 +1,5 @@
 import type { User } from "firebase/auth";
-import { DocumentReference, Timestamp } from "firebase/firestore";
+import { DocumentReference, Timestamp, FieldValue } from "firebase/firestore";
 
 export type Overview = {
   relevantWork: string[];
@@ -14,12 +14,6 @@ export type NameTitle = {
   id: string;
   name: string;
   title: string;
-}
-
-type SnapDetails = {
-  title: string;
-  startDate: Timestamp;
-  endDate: Timestamp;
 }
 
 export type Details = {
@@ -81,4 +75,19 @@ export type ResumeRef = DocumentReference<Resume>;
 export type ResumeRefModel = {
   ref: ResumeRef;
   user: User;
+}
+
+type BaseComment = {
+  uid: string;
+  photoURL: string | null;
+  displayName: string | null;
+  text: string;
+}
+
+export interface Comment extends BaseComment {
+  timestamp: Timestamp;
+}
+
+export interface CommentUpdate extends BaseComment {
+  timestamp: FieldValue;
 }

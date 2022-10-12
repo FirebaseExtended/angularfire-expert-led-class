@@ -19,3 +19,11 @@
     [is-editable]="true">
   </app-experience>
 </main>
+
+<aside>
+  <app-comments
+    [comments]="(comments$ | async)?.comments"
+    [user]="vm.user"
+    (on-comment)="addComment($event)">
+  </app-comments>
+</aside>

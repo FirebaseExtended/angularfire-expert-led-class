@@ -57,7 +57,7 @@
 
   --container-width: 1620px;
   --site-grid: [full-start] 1fr [container-start main-start] 3fr [main-end
-    aside-start] 2fr [container-end] 1fr [aside-end full-end];
+    aside-start] 2fr [aside-end container-end] 1fr [full-end];
 }
 
 * {

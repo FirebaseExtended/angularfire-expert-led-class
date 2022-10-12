@@ -1,60 +1,95 @@
-import { inject, Injectable } from "@angular/core";
-import { Auth, authState } from '@angular/fire/auth';
-import { map, switchMap, firstValueFrom, filter } from "rxjs";
-import { doc, docData, DocumentReference, Firestore, setDoc } from "@angular/fire/firestore";
-import { Experience, Resume, ResumeSnap } from "../models/resume.model";
+import { inject, Injectable } from '@angular/core'
+import { Auth, authState } from '@angular/fire/auth'
+import { map, switchMap, firstValueFrom, filter } from 'rxjs'
+import { Resume, ResumeSnap, Comment, CommentUpdate } from '../models/resume.model'
+import {
+  collection,
+  collectionData,
+  CollectionReference,
+  doc,
+  docData,
+  DocumentReference,
+  Firestore,
+  setDoc,
+  addDoc,
+} from '@angular/fire/firestore'
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class ResumeService {
-  firestore: Firestore = inject(Firestore);
-  auth: Auth = inject(Auth);
+  firestore: Firestore = inject(Firestore)
+  auth: Auth = inject(Auth)
 
   // Create a user observable
   user$ = authState(this.auth).pipe(
-    filter(user => user !== null),
-    map(user => user!),
-  );
+    filter((user) => user !== null),
+    map((user) => user!),
+  )
 
   // Create reference observable
   ref$ = this.user$.pipe(
-    map(user => {
-      const ref = doc(this.firestore, 'resumes', user.uid) as DocumentReference<ResumeSnap>;
-      return { ref, user };
-    })
-  );
+    map((user) => {
+      const ref = doc(this.firestore, 'resumes', user.uid) as DocumentReference<
+        ResumeSnap
+      >
+      return { ref, user }
+    }),
+  )
+
+  commentRef$ = this.ref$.pipe(
+    map((userRef) => {
+      const { user } = userRef
+      const ref = collection(userRef.ref, 'comments') as CollectionReference<Comment> | 
+        CollectionReference<CommentUpdate>
+      return { user, ref }
+    }),
+  )
 
   // Create an observable of the current user's resume
   current$ = this.ref$.pipe(
-    switchMap(({user, ref }) => {
+    switchMap(({ user, ref }) => {
       const resume$ = docData(ref, { idField: 'id' })
-      return resume$.pipe(map(resumeSnap => {
-        const resume = this.setDefaults(resumeSnap || {});
-        return { resume, user }
-      }));
-    })
+      return resume$.pipe(
+        map((resumeSnap) => {
+          const resume = this.setDefaults(resumeSnap || {})
+          return { resume, user }
+        }),
+      )
+    }),
   )
+
+  currentComments$ = this.commentRef$.pipe(
+    switchMap(({ ref, user }) => {
+      const comments$ = collectionData(ref as CollectionReference<Comment>, { idField: 'id' })
+      return comments$.pipe(map((comments) => ({ comments, user })))
+    }),
+  )
+
+  async addComment(comment: CommentUpdate) {
+    const { ref } = await firstValueFrom(this.commentRef$)
+    addDoc(ref as CollectionReference<CommentUpdate>, comment)
+  }
 
   // Create an update method for the current user's resume
   async updateCurrent(resume: Partial<Resume>) {
-    const { ref } = await firstValueFrom(this.ref$);
-    return setDoc(ref, resume, { merge: true });
+    const { ref } = await firstValueFrom(this.ref$)
+    return setDoc(ref, resume, { merge: true })
   }
 
   private setDefaults(resume: ResumeSnap): Resume {
-    resume.experience = resume.experience || [];
-    const experience = resume.experience.map(experience => {
+    resume.experience = resume.experience || []
+    const experience = resume.experience.map((experience) => {
       return {
         title: experience?.title,
         relevantWork: experience?.relevantWork,
         startDate: experience?.startDate?.toDate(),
         endDate: experience?.endDate?.toDate(),
-      };
-    });
+      }
+    })
     return {
       ...resume,
       experience,
-    };
+    }
   }
 }

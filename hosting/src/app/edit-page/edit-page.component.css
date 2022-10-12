@@ -2,13 +2,15 @@
   display: grid;
   grid-template-columns: var(--site-grid);
   padding-block: 64px;
-}
-
-:host > * {
-  grid-column: main;
+  gap: 32px;
 }
 
 main {
   display: grid;
+  grid-column: main;
   gap: 56px;
+}
+
+aside {
+  grid-column: aside;
 }
