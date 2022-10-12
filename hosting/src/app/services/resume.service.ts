@@ -1,9 +1,8 @@
 import { inject, Injectable } from "@angular/core";
 import { Auth, authState } from '@angular/fire/auth';
 import { map, switchMap, firstValueFrom, filter } from "rxjs";
-import { doc, docData, DocumentReference, Firestore, updateDoc } from "@angular/fire/firestore";
+import { doc, docData, DocumentReference, Firestore, setDoc } from "@angular/fire/firestore";
 import { Experience, Resume, ResumeSnap } from "../models/resume.model";
-import { setDoc } from "firebase/firestore";
 
 @Injectable({
   providedIn: "root",
@@ -44,10 +43,8 @@ export class ResumeService {
   }
 
   private setDefaults(resume: ResumeSnap): Resume {
-    resume.skills = resume.skills || [];
-    resume.overview = resume.overview || { relevantWork: [] };
-    resume.experience = resume.experience || [{ relevantWork: [] }, { relevantWork: [] }];
-    const experience: Experience[] = resume.experience.map(experience => {
+    resume.experience = resume.experience || [];
+    const experience = resume.experience.map(experience => {
       return {
         title: experience?.title,
         relevantWork: experience?.relevantWork,
@@ -58,6 +55,6 @@ export class ResumeService {
     return {
       ...resume,
       experience,
-    }
+    };
   }
 }

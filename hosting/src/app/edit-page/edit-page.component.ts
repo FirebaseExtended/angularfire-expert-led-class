@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { ResumeRef, ViewModel, Resume } from '../models/resume.model';
+import { ViewModel, Resume } from '../models/resume.model';
 import { ActivatedRoute } from '@angular/router';
-import { updateDoc } from '@angular/fire/firestore';
 import { ResumeService } from '../services/resume.service';
 
 @Component({

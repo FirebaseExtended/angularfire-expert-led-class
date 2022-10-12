@@ -1,0 +1,25 @@
+<form #commentForm="ngForm">
+
+  <div class="">
+    <textarea #message required></textarea>
+    <button 
+      [disabled]="!commentForm.valid" 
+      (click)="send(message.value)">
+      Send
+    </button>
+  </div>
+
+  <ul>
+    <li *ngFor="let comment in comments">
+      <div>
+        <img [src]="comment.photoURL" [alt]="comment.name">
+        <div>{{ comment.name }}</div>
+        <div>{{ comment.time.toDate() }}</div>
+      </div>
+      <div>
+        {{ comment.text }}
+      </div>
+    </li>
+  </ul>
+
+</form>

@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Details } from '../models/resume.model';
-import { Timestamp, serverTimestamp } from '@angular/fire/firestore'
 
 export type LocalDetails = {
   title: string;
@@ -24,9 +23,9 @@ export class DetailsComponent {
 
   ngOnInit() {
     this.newDetails = { 
-      title: this.title, 
-      startDate: this.startDate, 
-      endDate: this.endDate, 
+      title: this.title || '', 
+      startDate: this.startDate || new Date(), 
+      endDate: this.endDate || new Date(), 
     };
   }
 

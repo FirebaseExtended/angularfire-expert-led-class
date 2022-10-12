@@ -40,6 +40,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommentsComponent } from './comments/comments.component';
+import { ResumeService } from './services/resume.service';
+import { CommentsService } from './services/comments.service';
 
 @NgModule({
   declarations: [
@@ -53,10 +56,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HeadingLgComponent,
     ProfileComponent,
     ListSectionComponent,
-    DetailsComponent
+    DetailsComponent,
+    CommentsComponent,
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserModule, //.withServerTransition({ appId: 'serverApp' }),
     MatInputModule,
     BrowserAnimationsModule,
     MatNativeDateModule,
@@ -68,17 +72,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => {
       const auth = getAuth();
-      // connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
       return auth;
     }),
     provideFirestore(() => {
       const firestore = getFirestore();
-      // connectFirestoreEmulator(firestore, 'localhost', 8080);
-      // enableMultiTabIndexedDbPersistence(firestore);
       return firestore;
     })
   ],
-  providers: [],
+  providers: [
+    ResumeService,
+    CommentsService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

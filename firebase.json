@@ -15,7 +15,7 @@
       "port": 5001
     },
     "firestore": {
-      "port": 8080
+      "port": 8086
     },
     "hosting": {
       "port": 5033

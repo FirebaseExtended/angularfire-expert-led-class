@@ -28,7 +28,7 @@ const redirectLoggedInToEdit = () => redirectLoggedInTo(['edit']);
 
 const routes: Routes = [
   { 
-    path: 'edit', 
+    path: 'edit/:uid', 
     component: EditPageComponent,     
     canActivate: [AuthGuard], 
     data: { authGuardPipe: redirectUnauthorizedToLogin },

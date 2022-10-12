@@ -1,8 +1,8 @@
 <header>
   <nav>
     <h1>FireRes</h1>
-    <div class="auth" *ngIf="user$ | async else signin">
-      <a href="/edit">My Resume</a>
+    <div class="auth" *ngIf="user$ | async as user; else signin">
+      <a [href]="'/edit/' + user.uid">My Resume</a>
     </div>
     <ng-template #signin>
       <a href="/signin">Sign In</a>

@@ -11,6 +11,10 @@ export class SkillComponent {
   @Input() skills: string[] = []
   @Input('is-editable') isEditable = false;
   newSkill = '';
+
+  ngOnInit() {
+    this.skills = this.skills || [];
+  }
   
   onAdd() {
     this.skills = [...this.skills, this.newSkill];

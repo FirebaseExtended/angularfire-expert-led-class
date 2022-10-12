@@ -4,18 +4,18 @@
   <app-skill 
     [skills]="vm.resume.skills"
     (on-change)="onUpdate($event)"
-    [is-editable]="vm.user.uid === vm.resume.id">
+    [is-editable]="true">
   </app-skill>
 
   <app-overview 
     [overview]="vm.resume.overview"
     (on-change)="onUpdate($event)"
-    [is-editable]="vm.user.uid === vm.resume.id">
+    [is-editable]="true">
   </app-overview>
 
   <app-experience 
     [experience]="vm.resume.experience"
     (on-change)="onUpdate($event)"
-    [is-editable]="vm.user.uid === vm.resume.id">
+    [is-editable]="true">
   </app-experience>
 </main>

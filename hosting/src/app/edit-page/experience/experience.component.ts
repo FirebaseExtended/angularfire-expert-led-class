@@ -10,6 +10,15 @@ export class ExperienceComponent {
   @Output('on-change') onChange = new EventEmitter<Partial<Resume>>();
   @Input('is-editable') isEditable = false;
 
+  ngOnInit() {
+    this.experience = this.experience || [{
+      title: '',
+      startDate: new Date(),
+      endDate: new Date(),
+      relevantWork: []
+    }];
+  }
+
   delete(index: number) {
     this.experience = this.experience.filter((e, i) => index !== i);
     this.onChange.next({ experience: this.experience });
