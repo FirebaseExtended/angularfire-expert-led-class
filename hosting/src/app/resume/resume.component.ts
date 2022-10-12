@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Experience, ExperienceUpdate, Resume, ResumeListUpdate, ResumeUser, SkillUpdate } from '../models/resume.model';
+import { ExperienceUpdate, Resume, ResumeListUpdate, ResumeUser, SkillUpdate } from '../models/resume.model';
 
 @Component({
   selector: 'app-resume',
