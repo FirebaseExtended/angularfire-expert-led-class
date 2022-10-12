@@ -1,6 +1,6 @@
 <main *ngIf="resume$ | async as resume">
   <app-resume
-    [is-editable]="true"
+    [is-editable]="user.uid === routeId"
     [user]="user"
     [resume]="resume"
     (experience-update)="onUpdate($event)"
