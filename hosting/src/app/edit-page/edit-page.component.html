@@ -1,0 +1,19 @@
+<main *ngIf="resume$ | async as resume">
+  <app-resume
+    [is-editable]="true"
+    [user]="user"
+    [resume]="resume"
+    (experience-update)="onUpdate($event)"
+    (list-added)="onArrayAdd($event)">
+  </app-resume>
+</main>
+
+<aside *ngIf="comments$ | async as comments">
+  <app-comments
+    [resume-id]="routeId"
+    [comments]="comments"
+    [user]="user"
+    (on-comment)="addComment($event)"
+    (on-delete)="deleteComment($event)">
+  </app-comments>
+</aside>

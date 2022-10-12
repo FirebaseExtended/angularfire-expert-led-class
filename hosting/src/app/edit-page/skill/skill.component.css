@@ -1,0 +1,55 @@
+/*
+ Copyright 2022 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+form {
+  display: grid;
+  gap: 8px;
+}
+
+.skill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.skill-tag {
+  background: var(--black-9);
+  color: var(--theme-text-on-dark);
+  padding: 4px 6px;
+  font-size: .75rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.skill-tag:hover {
+  background: var(--color-8);
+}
+
+.skill-tag button {
+  background: none;
+  cursor: pointer;
+  border: 0;
+  font-size: .75rem;
+  color: var(--theme-text-on-dark);
+}
+
+/* .ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948;
+}
+
+.ng-invalid:not(form)  {
+  border-left: 5px solid #a94442;
+} */

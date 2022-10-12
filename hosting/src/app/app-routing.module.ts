@@ -16,13 +16,50 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+// should update docs for v9
+import { redirectLoggedInTo, redirectUnauthorizedTo, AuthGuard } from '@angular/fire/auth-guard';
 
-const routes: Routes = [];
+import { LoginPageComponent } from './login-page/login-page.component';
+import { EditPageComponent } from './edit-page/edit-page.component';
+import { ResumeResolver, UserResolver } from './resume.resolver';
+import { ViewPageComponent } from './view-page/view-page.component';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+const redirectLoggedInToEdit = () => redirectLoggedInTo(['edit']);
+
+const routes: Routes = [
+  { 
+    path: '', 
+    component: LoginPageComponent, 
+    canActivate: [AuthGuard], 
+    data: { authGuardPipe: redirectLoggedInToEdit }
+  },
+  { 
+    path: 'login', 
+    component: LoginPageComponent, 
+    canActivate: [AuthGuard], 
+    data: { authGuardPipe: redirectLoggedInToEdit }
+  },
+  { 
+    path: 'edit/:uid', 
+    component: EditPageComponent,     
+    canActivate: [AuthGuard], 
+    data: { authGuardPipe: redirectUnauthorizedToLogin },
+    resolve: {
+      user: UserResolver,
+    }
+  },
+  { 
+    path: 'view/:uid', 
+    component: ViewPageComponent,
+    resolve: {
+      resume: ResumeResolver,
+    }
+  },
+];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
-    initialNavigation: 'enabledBlocking'
-})],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

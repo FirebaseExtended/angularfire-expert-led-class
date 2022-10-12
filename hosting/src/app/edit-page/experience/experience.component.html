@@ -1,4 +1,4 @@
-/*
+<!--
  Copyright 2022 Google LLC
 
  Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,17 +12,26 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
- */
+ -->
 
- export const environment = {
-  production: true,
-  firebase: {
-    apiKey: "AIzaSyBHiRsAR4TGptQprOT1PRTVJ8AN7WFeUcA",
-    authDomain: "angular-uni-app.firebaseapp.com",
-    projectId: "angular-uni-app",
-    storageBucket: "angular-uni-app.appspot.com",
-    messagingSenderId: "550257474650",
-    appId: "1:550257474650:web:9c5d96e9adc2add4afec63"
-  },
-};
 
+<div class="action-bar">
+  <h3>EXPERIENCE</h3>
+  <button (click)="add()" class="add" *ngIf="isEditable">Add</button>
+</div>
+
+<div class="edit-card" *ngFor="let ex of experiences">
+  <div *ngIf="isEditable">
+    <button (click)="delete(ex)">Delete</button>
+  </div>
+  <div>
+    <app-details
+      [title]="ex.title"
+      [experience-id]="ex.id!"
+      [start-date]="ex.startDate"
+      [end-date]="ex.endDate"
+      (on-change)="onUpdate($event)"
+      [is-editable]="isEditable">
+    </app-details>
+  </div>
+</div>

@@ -14,15 +14,20 @@
  limitations under the License.
  */
 
- export const environment = {
-  production: true,
-  firebase: {
-    apiKey: "AIzaSyBHiRsAR4TGptQprOT1PRTVJ8AN7WFeUcA",
-    authDomain: "angular-uni-app.firebaseapp.com",
-    projectId: "angular-uni-app",
-    storageBucket: "angular-uni-app.appspot.com",
-    messagingSenderId: "550257474650",
-    appId: "1:550257474650:web:9c5d96e9adc2add4afec63"
-  },
-};
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Overview, OverviewUpdate } from 'src/app/models/resume.model';
 
+@Component({
+  selector: 'app-overview',
+  templateUrl: './overview.component.html',
+  styleUrls: ['./overview.component.css']
+})
+export class OverviewComponent {
+  @Input() overview!: string[];
+  @Input('is-editable') isEditable = false;
+  @Output('on-change') onChange = new EventEmitter<OverviewUpdate>();
+
+  updateWork(update: OverviewUpdate) {
+    this.onChange.next(update);
+  }
+}

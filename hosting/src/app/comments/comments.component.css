@@ -1,0 +1,87 @@
+/*
+ Copyright 2022 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+:host {
+  display: grid;
+  gap: 16px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-block-end: 32px;
+}
+
+form div:has(button) {
+  align-self: flex-end;
+}
+
+textarea {
+  resize: none;
+  height: 160px;
+  border-radius: 4px;
+  border: 1px solid var(--color-6);
+  padding: 16px;
+  overflow-y: scroll;
+}
+
+.comment-list {
+  display: grid;
+  gap: 16px;
+}
+
+.comment-item {
+  display: grid;
+  gap: 16px;
+  background-color: white;
+  border: 1px solid var(--black-1);
+  padding: 20px 16px;
+}
+
+.comment-user {
+  display: flex;
+  gap: 8px;
+}
+
+.comment-user img,
+.blank-image {
+  min-height: 32px;
+  min-width: 32px;
+  height: 32px;
+  width: 32px;
+  background-color: var(--color-7);
+  border-radius: 100%;
+}
+
+.comment-user-details {
+  display: grid;
+  gap: 4px;
+}
+
+.comment-name {
+  font-weight: bold;
+}
+
+.comment-time {
+  font-size: .75rem;
+  color: var(--color-8);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+}

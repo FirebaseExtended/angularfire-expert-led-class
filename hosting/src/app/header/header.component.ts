@@ -14,15 +14,15 @@
  limitations under the License.
  */
 
- export const environment = {
-  production: true,
-  firebase: {
-    apiKey: "AIzaSyBHiRsAR4TGptQprOT1PRTVJ8AN7WFeUcA",
-    authDomain: "angular-uni-app.firebaseapp.com",
-    projectId: "angular-uni-app",
-    storageBucket: "angular-uni-app.appspot.com",
-    messagingSenderId: "550257474650",
-    appId: "1:550257474650:web:9c5d96e9adc2add4afec63"
-  },
-};
+import { Component, inject } from '@angular/core';
+import { ResumeService } from '../services/resume.service';
 
+@Component({
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
+})
+export class HeaderComponent {
+  resumeService: ResumeService = inject(ResumeService);
+  user$ = this.resumeService.user$;
+}

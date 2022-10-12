@@ -19,8 +19,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: "AIzaSyBHiRsAR4TGptQprOT1PRTVJ8AN7WFeUcA",
+    authDomain: "angular-uni-app.firebaseapp.com",
+    projectId: "angular-uni-app",
+    storageBucket: "angular-uni-app.appspot.com",
+    messagingSenderId: "550257474650",
+    appId: "1:550257474650:web:9c5d96e9adc2add4afec63"
+  },
 };
+
 
 /*
  * For easier debugging in development mode, you can import the following file

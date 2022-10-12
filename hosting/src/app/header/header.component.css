@@ -14,15 +14,25 @@
  limitations under the License.
  */
 
- export const environment = {
-  production: true,
-  firebase: {
-    apiKey: "AIzaSyBHiRsAR4TGptQprOT1PRTVJ8AN7WFeUcA",
-    authDomain: "angular-uni-app.firebaseapp.com",
-    projectId: "angular-uni-app",
-    storageBucket: "angular-uni-app.appspot.com",
-    messagingSenderId: "550257474650",
-    appId: "1:550257474650:web:9c5d96e9adc2add4afec63"
-  },
-};
+header {
+  display: grid;
+  grid-template-columns: var(--site-grid);
+  background-color: var(--theme-surface-dark);
+}
 
+header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-block: 32px;
+  font-family: var(--font-body);
+  grid-column: container;
+}
+
+header, header a {
+  color: var(--theme-text-on-dark);
+}
+
+header h1 {
+  font: var(--font-heading-sm);
+}

@@ -1,0 +1,14 @@
+:host {
+  display: grid;
+  grid-template-columns: var(--site-grid);
+  padding-block: 64px;
+  gap: 64px;
+}
+
+main {
+  grid-column: main;
+}
+
+aside {
+  grid-column: aside;
+}
