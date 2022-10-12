@@ -43,6 +43,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommentsComponent } from './comments/comments.component';
 import { ResumeService } from './services/resume.service';
 import { ResumeComponent } from './resume/resume.component';
+import { ViewPageComponent } from './view-page/view-page.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { ResumeComponent } from './resume/resume.component';
     DetailsComponent,
     CommentsComponent,
     ResumeComponent,
+    ViewPageComponent,
   ],
   imports: [
     BrowserModule,
