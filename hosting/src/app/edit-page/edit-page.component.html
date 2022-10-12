@@ -22,7 +22,8 @@
 
 <aside>
   <app-comments
-    [comments]="(comments$ | async)?.comments"
+    [resume-id]="vm.resume.id!"
+    [comments]="(comments$ | async)!"
     [user]="vm.user"
     (on-comment)="addComment($event)"
     (on-delete)="deleteComment($event)">

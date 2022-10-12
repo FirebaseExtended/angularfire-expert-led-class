@@ -18,6 +18,7 @@ import { Component, inject, OnInit } from '@angular/core'
 import {
   Auth,
   GoogleAuthProvider,
+  signInAnonymously,
   signInWithPopup,
   signOut,
   User,
@@ -48,6 +49,10 @@ export class LoginPageComponent implements OnInit {
       photoURL: user.photoURL!,
     }
     return setDoc(userRef, appUser, { merge: true })
+  }
+
+  loginGuest() {
+    signInAnonymously(this.auth);
   }
 
   login() {

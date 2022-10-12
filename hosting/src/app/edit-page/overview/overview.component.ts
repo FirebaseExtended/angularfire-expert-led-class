@@ -23,7 +23,7 @@ import { Overview, Resume } from 'src/app/models/resume.model';
   styleUrls: ['./overview.component.css']
 })
 export class OverviewComponent {
-  @Input() overview!: Overview;
+  @Input() overview?: Overview;
   @Input('is-editable') isEditable = false;
   @Output('on-change') onChange = new EventEmitter<Partial<Resume>>();
 

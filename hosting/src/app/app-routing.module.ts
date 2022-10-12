@@ -21,7 +21,7 @@ import { redirectLoggedInTo, redirectUnauthorizedTo, AuthGuard } from '@angular/
 
 import { LoginPageComponent } from './login-page/login-page.component';
 import { EditPageComponent } from './edit-page/edit-page.component';
-import { ResumeResolver, ResumeStreamResolver } from './resume.resolver';
+import { ResumeResolver } from './resume.resolver';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 const redirectLoggedInToEdit = () => redirectLoggedInTo(['edit']);
@@ -34,7 +34,6 @@ const routes: Routes = [
     data: { authGuardPipe: redirectUnauthorizedToLogin },
     resolve: {
       vm: ResumeResolver,
-      vm$: ResumeStreamResolver,
     }
   },
   { path: 'login', component: LoginPageComponent,        canActivate: [AuthGuard], data: { authGuardPipe: redirectLoggedInToEdit }},

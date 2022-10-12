@@ -82,7 +82,7 @@ export interface ResumeSnap extends BaseResume {
 }
 
 export type ViewModel = {
-  resume: Resume;
+  resume: Partial<Resume>;
   user: User;
 }
 
@@ -98,6 +98,7 @@ type BaseComment = {
   photoURL: string | null;
   displayName: string | null;
   text: string;
+  resumeId: string;
 }
 
 export interface Comment extends BaseComment {

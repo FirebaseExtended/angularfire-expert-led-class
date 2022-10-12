@@ -24,7 +24,7 @@ import { Resume } from 'src/app/models/resume.model';
 })
 export class SkillComponent {
   @Output('on-change') onChange = new EventEmitter<Partial<Resume>>();
-  @Input() skills: string[] = []
+  @Input() skills?: string[];
   @Input('is-editable') isEditable = false;
   newSkill = '';
 
@@ -33,13 +33,13 @@ export class SkillComponent {
   }
   
   onAdd() {
-    this.skills = [...this.skills, this.newSkill];
+    this.skills = [...this.skills!, this.newSkill];
     this.newSkill = '';
     this.onChange.emit({ skills: this.skills });
   }
 
   onRemove(skillToDelete: string) {
-    this.skills = this.skills.filter(skill => skill !== skillToDelete);
+    this.skills = this.skills!.filter(skill => skill !== skillToDelete);
     this.onChange.emit({ skills: this.skills });
   }
 }

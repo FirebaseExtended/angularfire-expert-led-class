@@ -25,8 +25,9 @@ import { Comment, CommentUpdate } from '../models/resume.model';
   styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
-  @Input() comments?: Comment[] = [];
+  @Input() comments!: Comment[];
   @Input() user!: User;
+  @Input('resume-id') resumeId!: string;
   @Output('on-comment') onComment = new EventEmitter<CommentUpdate>();
   @Output('on-delete') onDelete = new EventEmitter<Comment>();
   newMessage = '';
@@ -42,6 +43,7 @@ export class CommentsComponent implements OnInit {
       displayName: this.user.displayName || 'Anonymous User',
       timestamp: serverTimestamp(),
       text: this.newMessage,
+      resumeId: '',
     });
     this.newMessage = '';
   }
