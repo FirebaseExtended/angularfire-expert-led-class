@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import { Component, inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { Resume, CommentUpdate, Comment, ListUpdate, SkillUpdate, OverviewUpdate, ExperienceUpdate, ResumeListUpdate } from '../models/resume.model';
 import { ActivatedRoute } from '@angular/router';
 import { ResumeService } from '../services/resume.service';

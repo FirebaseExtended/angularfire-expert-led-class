@@ -17,14 +17,16 @@
 import { Component, inject, OnInit } from '@angular/core'
 import {
   Auth,
+  authState,
   GoogleAuthProvider,
   signInAnonymously,
-  signInWithPopup,
+  signInWithRedirect,
   signOut,
   User,
-  user,
+  getRedirectResult
 } from '@angular/fire/auth'
 import { doc, Firestore, setDoc } from '@angular/fire/firestore'
+import { ResumeUser } from '../models/resume.model'
 
 @Component({
   selector: 'app-login-page',
@@ -34,18 +36,20 @@ import { doc, Firestore, setDoc } from '@angular/fire/firestore'
 export class LoginPageComponent implements OnInit {
   private auth: Auth = inject(Auth)
   private firestore: Firestore = inject(Firestore)
-  user$ = user(this.auth)
+  user$ = authState(this.auth)
   private provider = new GoogleAuthProvider()
   constructor() {}
 
-  ngOnInit(): void {}
+  async ngOnInit() {
+    const result = await getRedirectResult(this.auth);
+    this.updateUserData(result!.user);
+  }
 
   private updateUserData(user: User) {
-    const userRef = doc(this.firestore, `users/${user.uid}`)
-    const appUser: Partial<User> = {
+    const userRef = doc(this.firestore, `resumes/${user.uid}`)
+    const appUser: ResumeUser = {
       uid: user.uid!,
       displayName: user.displayName!,
-      email: user.email!,
       photoURL: user.photoURL!,
     }
     return setDoc(userRef, appUser, { merge: true })
@@ -56,10 +60,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   login() {
-    signInWithPopup(this.auth, this.provider).then((result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result)
-      this.updateUserData(result.user)
-    })
+    signInWithRedirect(this.auth, this.provider)
   }
   logout() {
     signOut(this.auth)

@@ -63,7 +63,7 @@ export class ResumeService {
         return {
           ...resume,
           experiences: this.setExperiencesDefaults(experiencesSnap),
-        }
+        };
       })
     );
   }
