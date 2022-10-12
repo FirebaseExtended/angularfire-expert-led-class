@@ -16,8 +16,8 @@
 
 import { inject, Injectable } from '@angular/core'
 import { Auth, authState } from '@angular/fire/auth'
-import { map, filter } from 'rxjs'
-import { Resume, ResumeSnap, Comment, CommentUpdate, ResumeListUpdate } from '../models/resume.model'
+import { map, filter, withLatestFrom } from 'rxjs'
+import { Resume, ResumeSnap, Comment, CommentUpdate, ResumeListUpdate, Experience, ExperienceSnap, ExperienceUpdate } from '../models/resume.model'
 import {
   collection,
   collectionData,
@@ -58,8 +58,24 @@ export class ResumeService {
     const ref = this.resumeRef<ResumeSnap>(resumeId);
     const resume$ = docData(ref, { idField: 'id' })
     return resume$.pipe(
-      map((resumeSnap) => this.setResumeDefaults(resumeSnap))
+      withLatestFrom(this.experiences$(resumeId)),
+      map(([resume, experiencesSnap]) => {
+        return {
+          ...resume,
+          experiences: this.setExperiencesDefaults(experiencesSnap),
+        }
+      })
     );
+  }
+
+  experienceRef<T = ExperienceSnap | Experience>(resumeId: string) {
+    const ref = this.resumeRef<Resume>(resumeId);
+    return collection(ref, 'experiences') as CollectionReference<T>;
+  }
+
+  experiences$(resumeId: string) {
+    const ref = this.experienceRef<ExperienceSnap>(resumeId);
+    return collectionData(ref, { idField: 'id' });
   }
 
   commentsRef<T = CommentUpdate | Comment>(resumeId: string) {
@@ -97,7 +113,6 @@ export class ResumeService {
   }
 
   async updateArrayInResume(resumeId: string, update: ResumeListUpdate) {
-    debugger;
     const { key, item, type } = update;
     const updateObject = {
       [`${key}`]: type === 'added' ? arrayUnion(item) : arrayRemove(item)
@@ -106,20 +121,36 @@ export class ResumeService {
     return setDoc(resumeRef, updateObject, { merge: true });
   }
 
-  private setResumeDefaults(resume: Partial<ResumeSnap> = {}): Partial<Resume> {
-    resume.experience = resume.experience || []
-    const experience = resume.experience.map(experience => {
+  async updateExperience(resumeId: string, experience: ExperienceUpdate) {
+    const ref = this.experienceRef<Experience>(resumeId);
+    switch(experience.type) {
+      case 'added': {
+        addDoc(ref, experience.item);
+        break;
+      }
+      case 'modified': {
+        const docRef = doc(ref, experience.item.id);
+        setDoc(docRef, experience.item, { merge: true });
+        break;
+      }
+      case 'removed': {
+        const docRef = doc(ref, experience.item.id);
+        deleteDoc(docRef);
+        break;
+      }
+    }
+  }
+
+  private setExperiencesDefaults(experiences: ExperienceSnap[] = []): Experience[] {
+    return experiences.map(experience => {
       return {
+        id: experience.id,
         title: experience?.title,
         relevantWork: experience?.relevantWork,
         startDate: experience?.startDate?.toDate(),
         endDate: experience?.endDate?.toDate(),
       }
-    })
-    return {
-      ...resume,
-      experience,
-    };
+    });
   }
 
   private setCommentDefaults(comments: Comment[] = []): Comment[] {

@@ -17,11 +17,15 @@
 import type { User } from "firebase/auth";
 import { DocumentReference, Timestamp, FieldValue } from "firebase/firestore";
 
-export type ListUpdate<T> = { key: T, item: string, type: 'added' | 'removed' }
-export type SkillUpdate = ListUpdate<'skills'>;
-export type ExperienceUpdate = ListUpdate<'experience'>;
-export type OverviewUpdate = ListUpdate<'overview'>;
-export type ResumeListUpdate = SkillUpdate | OverviewUpdate | ExperienceUpdate;
+export type ListUpdate<T, K = any> = { key: T, item: K, type: 'added' | 'removed' }
+export type SkillUpdate = ListUpdate<'skills', string>;
+export type OverviewUpdate = ListUpdate<'overview', string>;
+export type ResumeListUpdate = SkillUpdate | OverviewUpdate;
+export type ExperienceUpdate = { 
+  key: 'experience', 
+  item: Experience, 
+  type: 'added' | 'removed' | 'modified'
+}
 
 export type ResumeUser = {
   photoURL: string | null;
@@ -50,14 +54,15 @@ export type Details = {
   endDate?: Date;
 }
 
-export type Experience = {
+export interface Experience extends Details {
+  id?: string;
   title: string;
   startDate: Date;
   endDate: Date;
-  relevantWork: string[];
 }
 
-type SnapExperience = {
+export type ExperienceSnap = {
+  id: string;
   title: string;
   startDate: Timestamp;
   endDate: Timestamp;
@@ -87,11 +92,11 @@ type BaseResume = {
 }
 
 export interface Resume extends BaseResume {
-  experience: Experience[];
+  experiences: Experience[];
 }
 
 export interface ResumeSnap extends BaseResume {
-  experience: SnapExperience[];
+  experience: ExperienceSnap[];
 }
 
 export type ResumeViewModel = {

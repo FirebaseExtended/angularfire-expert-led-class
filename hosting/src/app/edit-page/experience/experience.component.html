@@ -20,25 +20,18 @@
   <button (click)="add()" class="add" *ngIf="isEditable">Add</button>
 </div>
 
-<div class="edit-card" *ngFor="let ex of experience; let i = index" [attr.data-index]="i">
+<div class="edit-card" *ngFor="let ex of experiences">
   <div *ngIf="isEditable">
-    <button (click)="delete(i)">Delete</button>
+    <button (click)="delete(ex)">Delete</button>
   </div>
   <div>
     <app-details
       [title]="ex.title"
-      [startDate]="ex.startDate"
-      [endDate]="ex.endDate"
-      (on-change)="updateDetails($event, i)"
+      [experience-id]="ex.id!"
+      [start-date]="ex.startDate"
+      [end-date]="ex.endDate"
+      (on-change)="onUpdate($event)"
       [is-editable]="isEditable">
     </app-details>
-
-    <!-- <app-list-section
-      label="Relevant Work"
-      key="relevantWork"
-      [list]="ex.relevantWork"
-      (on-change)="updateWork($event, i)"
-      [is-editable]="isEditable">
-    </app-list-section> -->
   </div>
 </div>

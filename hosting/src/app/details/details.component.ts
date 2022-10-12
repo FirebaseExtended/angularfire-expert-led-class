@@ -15,13 +15,7 @@
  */
 
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Details } from '../models/resume.model';
-
-export type LocalDetails = {
-  title: string;
-  startDate: Date;
-  endDate: Date;
-}
+import { Experience } from '../models/resume.model';
 
 @Component({
   selector: 'app-details',
@@ -29,16 +23,18 @@ export type LocalDetails = {
   styleUrls: ['./details.component.css']
 })
 export class DetailsComponent {
-  @Output('on-change') onChange = new EventEmitter<Details>();
-  @Input() title: string = '';
-  @Input() startDate: Date = new Date();
-  @Input() endDate: Date = new Date();
+  @Output('on-change') onChange = new EventEmitter<Experience>();
+  @Input() title!: string;
+  @Input('experience-id') id!: string;
+  @Input('start-date') startDate!: Date;
+  @Input('end-date') endDate!: Date;
   @Input('is-editable') isEditable: boolean = false;
 
-  newDetails!: Details;
+  newDetails!: Experience;
 
   ngOnInit() {
-    this.newDetails = { 
+    this.newDetails = {
+      id: this.id,
       title: this.title || '', 
       startDate: this.startDate || new Date(), 
       endDate: this.endDate || new Date(), 
