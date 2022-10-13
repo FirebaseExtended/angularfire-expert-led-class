@@ -37,17 +37,6 @@ export type Overview = {
   relevantWork: string[];
 }
 
-export type OneThing = {
-  content: string;
-  source: string;
-}
-
-export type NameTitle = {
-  id: string;
-  name: string;
-  title: string;
-}
-
 export type Details = {
   title?: string;
   startDate?: Date;
@@ -69,24 +58,9 @@ export type ExperienceSnap = {
   relevantWork: string[];
 }
 
-export type Education = {
-  title: string;
-  startDate: Date;
-  endDate: Date;
-  degree: string;
-}
-
-export type About = {
-  content: string;
-}
-
 type BaseResume = {
   id: string;
-  nameTitle: NameTitle;
-  about: About;
   overview: string[];
-  education: Education[];
-  oneThing: OneThing;
   skills: string[];
   user: ResumeUser;
 }
@@ -132,11 +106,7 @@ export interface CommentUpdate extends BaseComment {
 export class ResumeObject implements Resume {
   experiences: Experience[] = [];
   id!: string;
-  nameTitle!: NameTitle;
-  about!: About;
   overview!: string[];
-  education: Education[] = [];
-  oneThing!: OneThing;
   skills: string[] = [];
   user!: ResumeUser;
 }

@@ -33,5 +33,6 @@ export class HeaderComponent {
       .catch((error) => {
         console.log('sign out error: ' + error);
       });
+    window.location.reload();
   }
 }
