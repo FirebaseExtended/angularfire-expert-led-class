@@ -25,20 +25,17 @@ import { ResumeResolver, UserResolver } from './resume.resolver';
 import { ViewPageComponent } from './view-page/view-page.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
-const redirectLoggedInToEdit = () => redirectLoggedInTo(['edit']);
 
 const routes: Routes = [
   { 
     path: '', 
     component: LoginPageComponent, 
     canActivate: [AuthGuard], 
-    data: { authGuardPipe: redirectLoggedInToEdit }
   },
   { 
     path: 'login', 
     component: LoginPageComponent, 
     canActivate: [AuthGuard], 
-    data: { authGuardPipe: redirectLoggedInToEdit }
   },
   { 
     path: 'edit/:uid', 

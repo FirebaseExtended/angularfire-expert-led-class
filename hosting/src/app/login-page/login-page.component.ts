@@ -41,8 +41,12 @@ export class LoginPageComponent implements OnInit {
   constructor() {}
 
   async ngOnInit() {
-    const result = await getRedirectResult(this.auth);
-    this.updateUserData(result!.user);
+    getRedirectResult(this.auth).then((result) => {
+      this.updateUserData(result!.user).then(a => {
+      });
+      
+    });
+    
   }
 
   private updateUserData(user: User) {
@@ -52,7 +56,7 @@ export class LoginPageComponent implements OnInit {
       displayName: user.displayName!,
       photoURL: user.photoURL!,
     };
-    return setDoc(userRef, appUser, { merge: true });
+    return setDoc(userRef, JSON.parse(JSON.stringify(appUser)), { merge: true });
   }
 
   loginGuest() {
@@ -61,8 +65,5 @@ export class LoginPageComponent implements OnInit {
 
   login() {
     signInWithRedirect(this.auth, this.provider);
-    getRedirectResult(this.auth).then((result) => {
-      this.updateUserData(result!.user);
-    });
   }
 }
