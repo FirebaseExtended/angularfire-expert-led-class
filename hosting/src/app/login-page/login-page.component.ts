@@ -28,6 +28,7 @@ import {
   UserCredential,
 } from '@angular/fire/auth';
 import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { ResumeUser } from '../models/resume.model';
 import { ResumeService } from '../services/resume.service';
 
@@ -40,32 +41,30 @@ export class LoginPageComponent implements OnInit {
   private auth: Auth = inject(Auth);
   private firestore: Firestore = inject(Firestore);
   private resumeService = inject(ResumeService);
+  private router = inject(Router);
   user$ = authState(this.auth);
   private provider = new GoogleAuthProvider();
   constructor() {}
 
-  async ngOnInit() {
+  ngOnInit() {
     getRedirectResult(this.auth).then((result) => {
-      if (!result) {
-        return;
-      }
+      if (!result) { return; }
       if (getAdditionalUserInfo(result as UserCredential)?.isNewUser) {
         this.resumeService.createEmptyResume(result?.user.uid || '');
       }
       this.updateUserData(result!.user);
+      this.router.navigate([`edit/${result.user.uid}`])
     });
   }
 
-  private updateUserData(user: User) {
-    const userRef = doc(this.firestore, `resumes/${user.uid}`);
-    const appUser: ResumeUser = {
-      uid: user.uid!,
-      displayName: user.displayName!,
-      photoURL: user.photoURL!,
+  private updateUserData(result: User) {
+    const userRef = doc(this.firestore, `resumes/${result.uid}`);
+    const user = {
+      uid: result.uid!,
+      displayName: result.displayName!,
+      photoURL: result.photoURL!,
     };
-    return setDoc(userRef, {user: JSON.parse(JSON.stringify(appUser))}, {
-      merge: true,
-    });
+    return setDoc(userRef, { user }, { merge: true });
   }
 
   loginGuest() {

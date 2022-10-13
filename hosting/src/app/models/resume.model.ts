@@ -82,11 +82,7 @@ export type About = {
 
 type BaseResume = {
   id: string;
-  nameTitle: NameTitle;
-  about: About;
   overview: string[];
-  education: Education[];
-  oneThing: OneThing;
   skills: string[];
   user: ResumeUser;
 }
@@ -132,11 +128,7 @@ export interface CommentUpdate extends BaseComment {
 export class ResumeObject implements Resume {
   experiences: Experience[] = [];
   id!: string;
-  nameTitle!: NameTitle;
-  about!: About;
   overview!: string[];
-  education: Education[] = [];
-  oneThing!: OneThing;
   skills: string[] = [];
   user!: ResumeUser;
 }
