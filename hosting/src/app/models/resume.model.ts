@@ -125,10 +125,10 @@ export interface CommentUpdate extends BaseComment {
   timestamp: FieldValue;
 }
 
-export class ResumeObject implements Resume {
-  experiences: Experience[] = [];
-  id!: string;
-  overview!: string[];
-  skills: string[] = [];
-  user!: ResumeUser;
+export interface ResumeObject extends Resume {
+  experiences: Experience[];
+  id: string;
+  overview: string[];
+  skills: string[];
+  user: ResumeUser;
 }

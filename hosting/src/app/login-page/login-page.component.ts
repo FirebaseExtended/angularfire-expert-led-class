@@ -29,6 +29,7 @@ import {
 } from '@angular/fire/auth';
 import { doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { ResumeUser } from '../models/resume.model';
 import { ResumeService } from '../services/resume.service';
 
@@ -38,40 +39,22 @@ import { ResumeService } from '../services/resume.service';
   styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent implements OnInit {
-  private auth: Auth = inject(Auth);
-  private firestore: Firestore = inject(Firestore);
-  private resumeService = inject(ResumeService);
   private router = inject(Router);
-  user$ = authState(this.auth);
-  private provider = new GoogleAuthProvider();
-  constructor() {}
+  user$: Observable<Partial<User> | null> = of(null)
 
   ngOnInit() {
-    getRedirectResult(this.auth).then((result) => {
-      if (!result) { return; }
-      if (getAdditionalUserInfo(result as UserCredential)?.isNewUser) {
-        this.resumeService.createEmptyResume(result?.user.uid || '');
-      }
-      this.updateUserData(result!.user);
-      this.router.navigate([`edit/${result.user.uid}`])
-    });
-  }
-
-  private updateUserData(result: User) {
-    const userRef = doc(this.firestore, `resumes/${result.uid}`);
-    const user = {
-      uid: result.uid!,
-      displayName: result.displayName!,
-      photoURL: result.photoURL!,
-    };
-    return setDoc(userRef, { user }, { merge: true });
+    // Detect redirect state
   }
 
   loginGuest() {
-    signInAnonymously(this.auth);
+    // Login anonymously
   }
 
   login() {
-    signInWithRedirect(this.auth, this.provider);
+    // Login with Google
+  }
+
+  private redirectToEditPage(uid: string) {
+    this.router.navigate([`edit/${uid}`]);
   }
 }
