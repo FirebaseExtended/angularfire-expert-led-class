@@ -92,7 +92,7 @@ export class ResumeService {
   }
 
   async updateExperience(resumeId: string, experience: ExperienceUpdate) {
-    
+
   }
 
   private setExperiencesDefaults(experiences: ExperienceSnap[] = []): Experience[] {
@@ -112,7 +112,7 @@ export class ResumeService {
       return {
         ...comment,
         timeDisplay: new Intl.DateTimeFormat(
-          'en', 
+          'en',
           { dateStyle: 'short', timeStyle: 'short' }
         ).format(comment.timestamp?.toDate()),
       };
@@ -134,14 +134,14 @@ export class ResumeService {
       experiences,
     }
   }
-  
+
   async createEmptyResume(user: User) {
     const resumeData = this.setDefaults({
       experiences: [],
       overview: [],
       skills: [],
-      user,
+      user: { displayName: user.displayName, uid: user.uid, photoURL: user.photoURL || null },
     } as any);
-    addDoc(collection(this.firestore, 'resumes'), resumeData);
+    return addDoc(collection(this.firestore, 'resumes'), resumeData);
   }
 }

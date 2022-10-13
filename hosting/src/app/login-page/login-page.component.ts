@@ -41,17 +41,28 @@ import { ResumeService } from '../services/resume.service';
 export class LoginPageComponent implements OnInit {
   private router = inject(Router);
   user$: Observable<Partial<User> | null> = of(null)
+  auth = inject(Auth);
+  private googleAuthProvider = new GoogleAuthProvider();
+  resumeService = inject(ResumeService);
 
   ngOnInit() {
     // Detect redirect state
+    getRedirectResult(this.auth).then(result => {
+      if (!result) return;
+      this.resumeService.createEmptyResume(result.user).then(() => {
+        this.redirectToEditPage(result.user.uid);
+      })
+    });
   }
 
   loginGuest() {
     // Login anonymously
+    signInAnonymously(this.auth);
   }
 
   login() {
     // Login with Google
+    signInWithRedirect(this.auth, this.googleAuthProvider);
   }
 
   private redirectToEditPage(uid: string) {

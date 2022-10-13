@@ -23,22 +23,34 @@ import { EditPageComponent } from './edit-page/edit-page.component';
 import { ResumeResolver, UserResolver } from './resume.resolver';
 import { ViewPageComponent } from './view-page/view-page.component';
 
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+
 const routes: Routes = [
-  { 
-    path: '', 
-    component: LoginPageComponent, 
+  {
+    path: '',
+    component: LoginPageComponent,
   },
-  { 
-    path: 'login', 
-    component: LoginPageComponent, 
+  {
+    path: 'login',
+    component: LoginPageComponent,
   },
-  { 
-    path: 'edit/:uid', 
+  {
+    path: 'edit/:uid',
     component: EditPageComponent,
+    canActivate: [AuthGuard],
+    data: {
+      authGuardPipe: redirectUnauthorizedToLogin
+    },
+    resolve: {
+      user: UserResolver
+    }
   },
-  { 
-    path: 'view/:uid', 
+  {
+    path: 'view/:uid',
     component: ViewPageComponent,
+    data: {
+      authGuardPipe: redirectUnauthorizedToLogin
+    },
     resolve: {
       resume: ResumeResolver,
     }
