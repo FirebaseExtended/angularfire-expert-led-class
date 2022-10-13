@@ -30,12 +30,10 @@ const routes: Routes = [
   { 
     path: '', 
     component: LoginPageComponent, 
-    canActivate: [AuthGuard], 
   },
   { 
     path: 'login', 
     component: LoginPageComponent, 
-    canActivate: [AuthGuard], 
   },
   { 
     path: 'edit/:uid', 

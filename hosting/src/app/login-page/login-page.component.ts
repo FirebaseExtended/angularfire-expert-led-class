@@ -63,7 +63,7 @@ export class LoginPageComponent implements OnInit {
       displayName: user.displayName!,
       photoURL: user.photoURL!,
     };
-    return setDoc(userRef, JSON.parse(JSON.stringify(appUser)), {
+    return setDoc(userRef, {user: JSON.parse(JSON.stringify(appUser))}, {
       merge: true,
     });
   }

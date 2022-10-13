@@ -175,13 +175,6 @@ export class ResumeService {
         endDate: experience.endDate,
       };
     });
-    resume.user = resume.user || this.user$.pipe(map(user => {
-      return {
-        photoURL: user.photoURL,
-        displayName: user.displayName,
-        uid: user.uid
-      }
-    }))
     return {
       ...resume,
       experiences,
@@ -191,6 +184,6 @@ export class ResumeService {
   async createEmptyResume(resumeId: String) {
     const resumeData = JSON.parse(JSON.stringify(this.setDefaults(new ResumeObject() as Resume)));
     resumeData.id = resumeId;
-    setDoc(doc(this.firestore, "resumes", resumeData.id), resumeData);
+    setDoc(doc(this.firestore, "resumes", resumeData.id), resumeData, {merge: true});
   }
 }
