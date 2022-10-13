@@ -21,7 +21,7 @@
 </div>
 
 <div class="edit-card" *ngFor="let ex of experiences">
-  <div *ngIf="isEditable">
+  <div *ngIf="isEditable" class="delete-bar">
     <button (click)="delete(ex)">Delete</button>
   </div>
   <div>

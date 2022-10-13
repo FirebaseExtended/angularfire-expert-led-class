@@ -43,8 +43,8 @@ export class ResumeService {
 
   // Create a user observable
   user$ = authState(this.auth).pipe(
-    filter((user) => user !== null),
-    map((user) => user!),
+    filter(user => user !== null),
+    map(user => user!),
   )
 
   // Create resume reference
