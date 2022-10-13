@@ -17,7 +17,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // should update docs for v9
-import { redirectLoggedInTo, redirectUnauthorizedTo, AuthGuard } from '@angular/fire/auth-guard';
+import { redirectUnauthorizedTo, AuthGuard } from '@angular/fire/auth-guard';
 
 import { LoginPageComponent } from './login-page/login-page.component';
 import { EditPageComponent } from './edit-page/edit-page.component';

@@ -23,10 +23,13 @@ import {
   signInWithRedirect,
   signOut,
   User,
-  getRedirectResult
-} from '@angular/fire/auth'
-import { doc, Firestore, setDoc } from '@angular/fire/firestore'
-import { ResumeUser } from '../models/resume.model'
+  getRedirectResult,
+  getAdditionalUserInfo,
+  UserCredential,
+} from '@angular/fire/auth';
+import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { ResumeUser } from '../models/resume.model';
+import { ResumeService } from '../services/resume.service';
 
 @Component({
   selector: 'app-login-page',
@@ -34,29 +37,35 @@ import { ResumeUser } from '../models/resume.model'
   styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent implements OnInit {
-  private auth: Auth = inject(Auth)
-  private firestore: Firestore = inject(Firestore)
-  user$ = authState(this.auth)
-  private provider = new GoogleAuthProvider()
+  private auth: Auth = inject(Auth);
+  private firestore: Firestore = inject(Firestore);
+  private resumeService = inject(ResumeService);
+  user$ = authState(this.auth);
+  private provider = new GoogleAuthProvider();
   constructor() {}
 
   async ngOnInit() {
     getRedirectResult(this.auth).then((result) => {
-      this.updateUserData(result!.user).then(a => {
-      });
-      
+      if (!result) {
+        return;
+      }
+      if (getAdditionalUserInfo(result as UserCredential)?.isNewUser) {
+        this.resumeService.createEmptyResume(result?.user.uid || '');
+      }
+      this.updateUserData(result!.user);
     });
-    
   }
 
   private updateUserData(user: User) {
-    const userRef = doc(this.firestore, `resumes/${user.uid}`)
+    const userRef = doc(this.firestore, `resumes/${user.uid}`);
     const appUser: ResumeUser = {
       uid: user.uid!,
       displayName: user.displayName!,
       photoURL: user.photoURL!,
     };
-    return setDoc(userRef, JSON.parse(JSON.stringify(appUser)), { merge: true });
+    return setDoc(userRef, JSON.parse(JSON.stringify(appUser)), {
+      merge: true,
+    });
   }
 
   loginGuest() {

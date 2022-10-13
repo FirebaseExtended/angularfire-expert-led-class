@@ -128,3 +128,15 @@ export interface Comment extends BaseComment {
 export interface CommentUpdate extends BaseComment {
   timestamp: FieldValue;
 }
+
+export class ResumeObject implements Resume {
+  experiences: Experience[] = [];
+  id!: string;
+  nameTitle!: NameTitle;
+  about!: About;
+  overview!: string[];
+  education: Education[] = [];
+  oneThing!: OneThing;
+  skills: string[] = [];
+  user!: ResumeUser;
+}
