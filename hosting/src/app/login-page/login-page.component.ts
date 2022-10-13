@@ -38,17 +38,23 @@ import { ResumeService } from '../services/resume.service';
   styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent implements OnInit {
+  // Inject Auth, Firestore, Router, and ResumeService
   private auth: Auth = inject(Auth);
   private firestore: Firestore = inject(Firestore);
   private resumeService = inject(ResumeService);
   private router = inject(Router);
+  // Get user from auth state
   user$ = authState(this.auth);
+  // Init Google auth provider
   private provider = new GoogleAuthProvider();
+
   constructor() {}
 
   ngOnInit() {
+    // Get auth after redirect
     getRedirectResult(this.auth).then((result) => {
       if (!result) { return; }
+      // Create empty resume in Firestore on user's first login
       if (getAdditionalUserInfo(result as UserCredential)?.isNewUser) {
         this.resumeService.createEmptyResume(result?.user.uid || '');
       }
@@ -56,7 +62,8 @@ export class LoginPageComponent implements OnInit {
       this.router.navigate([`edit/${result.user.uid}`])
     });
   }
-
+  
+  // Update user in resume doc
   private updateUserData(result: User) {
     const userRef = doc(this.firestore, `resumes/${result.uid}`);
     const user = {
@@ -67,10 +74,12 @@ export class LoginPageComponent implements OnInit {
     return setDoc(userRef, { user }, { merge: true });
   }
 
+  // Log in anonymously
   loginGuest() {
     signInAnonymously(this.auth);
   }
 
+  // Log in with redirect to Google auth
   login() {
     signInWithRedirect(this.auth, this.provider);
   }

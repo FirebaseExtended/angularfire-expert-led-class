@@ -20,9 +20,10 @@ import { Experience } from '../models/resume.model';
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css']
+  styleUrls: ['./details.component.css'],
 })
 export class DetailsComponent {
+  // Emit change event to parent
   @Output('on-change') onChange = new EventEmitter<Experience>();
   @Input() title!: string;
   @Input('experience-id') id!: string;
@@ -35,12 +36,13 @@ export class DetailsComponent {
   ngOnInit() {
     this.newDetails = {
       id: this.id,
-      title: this.title || '', 
-      startDate: this.startDate || new Date(), 
-      endDate: this.endDate || new Date(), 
+      title: this.title || '',
+      startDate: this.startDate || new Date(),
+      endDate: this.endDate || new Date(),
     };
   }
 
+  // Emit update experience event
   onUpdate() {
     this.onChange.next(this.newDetails);
   }

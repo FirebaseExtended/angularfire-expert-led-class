@@ -25,6 +25,7 @@ import { ResumeService } from './services/resume.service';
   providedIn: 'root'
 })
 export class ResumeResolver implements Resolve<Partial<Resume>> {
+  // Get Resume document from Firestore using route uid, and return it as an Observable
   resumeService = inject(ResumeService);
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Partial<Resume>> {
     return this.resumeService.resume$(route.paramMap.get('uid')!);
@@ -35,6 +36,7 @@ export class ResumeResolver implements Resolve<Partial<Resume>> {
   providedIn: 'root'
 })
 export class UserResolver implements Resolve<User> {
+  // Return the current User as an Observable
   resumeService = inject(ResumeService);
   resolve(): Observable<User> {
     return this.resumeService.user$;

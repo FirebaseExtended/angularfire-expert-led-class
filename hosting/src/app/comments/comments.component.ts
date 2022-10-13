@@ -25,9 +25,11 @@ import { Comment, CommentUpdate } from '../models/resume.model';
   styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
+  // Get comments array, user, and resume id from parent
   @Input() comments!: Comment[];
   @Input() user!: User;
   @Input('resume-id') resumeId!: string;
+  // Emit create/delete events to parent
   @Output('on-comment') onComment = new EventEmitter<CommentUpdate>();
   @Output('on-delete') onDelete = new EventEmitter<Comment>();
   newMessage = '';
@@ -36,6 +38,7 @@ export class CommentsComponent implements OnInit {
     this.comments = this.comments || [];
   }
 
+  // Emit add comment event
   send() {
     this.onComment.next({
       uid: this.user.uid,
@@ -48,6 +51,7 @@ export class CommentsComponent implements OnInit {
     this.newMessage = '';
   }
 
+   // Emit delete comment event
   delete(comment: Comment) {
     this.onDelete.next(comment);
   }

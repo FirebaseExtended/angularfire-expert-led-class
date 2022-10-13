@@ -16,7 +16,6 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// should update docs for v9
 import { redirectUnauthorizedTo, AuthGuard } from '@angular/fire/auth-guard';
 
 import { LoginPageComponent } from './login-page/login-page.component';
@@ -26,35 +25,43 @@ import { ViewPageComponent } from './view-page/view-page.component';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 
+// Add each page (login, edit, view) as separate paths
 const routes: Routes = [
-  { 
-    path: '', 
-    component: LoginPageComponent, 
+  // Show login page on default path
+  {
+    path: '',
+    component: LoginPageComponent,
   },
-  { 
-    path: 'login', 
-    component: LoginPageComponent, 
+  // Add redirect to login
+  {
+    path: 'login',
+    component: LoginPageComponent,
   },
-  { 
-    path: 'edit/:uid', 
-    component: EditPageComponent,     
-    canActivate: [AuthGuard], 
+  {
+    // Allow edit page to take in resume uid as path param
+    path: 'edit/:uid',
+    component: EditPageComponent,
+    // Protect edit page using AuthGuard, redirect user to Login page if unauthorized
+    canActivate: [AuthGuard],
     data: { authGuardPipe: redirectUnauthorizedToLogin },
+    // Resolve the current user data
     resolve: {
       user: UserResolver,
-    }
+    },
   },
-  { 
-    path: 'view/:uid', 
+  {
+    // Allow view page to take in resume uid as path param
+    path: 'view/:uid',
     component: ViewPageComponent,
+    // Resolve the current resume data
     resolve: {
       resume: ResumeResolver,
-    }
+    },
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

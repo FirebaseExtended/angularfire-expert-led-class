@@ -41,7 +41,7 @@ export class ResumeService {
   firestore = inject(Firestore)
   auth = inject(Auth)
 
-  // Create a user observable
+  // Create a user observable from current auth state
   user$ = authState(this.auth).pipe(
     filter(user => user !== null),
     map(user => user!),
@@ -53,7 +53,7 @@ export class ResumeService {
     return doc<T>(resumeCol, resumeId);
   }
 
-  // Creaet a resume observable
+  // Creaet a resume observable from Firestore
   resume$(resumeId: string) {
     const ref = this.resumeRef<ResumeSnap>(resumeId);
     const resume$ = docData(ref, { idField: 'id' })
@@ -68,23 +68,28 @@ export class ResumeService {
     );
   }
 
+  // Create an experiences collection reference
   experienceRef<T = ExperienceSnap | Experience>(resumeId: string) {
     const ref = this.resumeRef<Resume>(resumeId);
     return collection(ref, 'experiences') as CollectionReference<T>;
   }
 
+  // Create an observable collection of experiences based on resume id
   experiences$(resumeId: string) {
     const ref = this.experienceRef<ExperienceSnap>(resumeId);
     return collectionData(ref, { idField: 'id' });
   }
 
+  // Create an comments collection reference
   commentsRef<T = CommentUpdate | Comment>(resumeId: string) {
     const resumeRef = this.resumeRef(resumeId);
     return collection(resumeRef, 'comments') as CollectionReference<T>;
   }
 
+  // Create an observable collection of comments based on resume id
   comments$(resumeId: string) {
     const commentsRef = this.commentsRef<Comment>(resumeId);
+    // Order comments by timestamp
     const commentsOrderedQuery = query(
       commentsRef,
       orderBy('timestamp'),
@@ -95,11 +100,13 @@ export class ResumeService {
     );
   }
 
+  // Add comment doc to comments collection of resume
   async addComment(comment: CommentUpdate) {
     const commentsRef = this.commentsRef<CommentUpdate>(comment.resumeId);
     return addDoc(commentsRef, comment);
   }
 
+  // Delete comment doc from comments collection of resume
   async deleteComment(comment: Comment) {
     const commentsRef = this.commentsRef<CommentUpdate>(comment.resumeId);
     const commentDoc = doc(commentsRef, comment.id);
@@ -112,6 +119,7 @@ export class ResumeService {
     return setDoc(resumeRef, resume, { merge: true })
   }
 
+  // Update arbitrary array in resume doc
   async updateArrayInResume(resumeId: string, update: ResumeListUpdate) {
     const { key, item, type } = update;
     const updateObject = {
@@ -121,6 +129,7 @@ export class ResumeService {
     return setDoc(resumeRef, updateObject, { merge: true });
   }
 
+  // Update arbitrary experience in resume doc
   async updateExperience(resumeId: string, experience: ExperienceUpdate) {
     const ref = this.experienceRef<Experience>(resumeId);
     switch(experience.type) {
@@ -141,6 +150,7 @@ export class ResumeService {
     }
   }
 
+  // Translate ExperienceSnap to Experience with neccessary default values
   private setExperiencesDefaults(experiences: ExperienceSnap[] = []): Experience[] {
     return experiences.map(experience => {
       return {
@@ -153,6 +163,7 @@ export class ResumeService {
     });
   }
 
+  // Populate each comment in array with neccessary default values
   private setCommentDefaults(comments: Comment[] = []): Comment[] {
     return comments.map(comment => {
       return {
@@ -165,6 +176,7 @@ export class ResumeService {
     });
   }
 
+  // Populate resume in array with neccessary default values
   private setDefaults(resume: Resume): Resume {
     resume.overview = resume.overview || { relevantWork: [] };
     resume.experiences = resume.experiences || [{ relevantWork: [] }];
@@ -181,6 +193,7 @@ export class ResumeService {
     }
   }
   
+  // Create empty template resume in Firestore
   async createEmptyResume(resumeId: String) {
     const resumeData = JSON.parse(JSON.stringify(this.setDefaults(new ResumeObject() as Resume)));
     resumeData.id = resumeId;

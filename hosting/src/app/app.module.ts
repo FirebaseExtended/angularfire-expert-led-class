@@ -22,9 +22,13 @@ import { AppComponent } from './app.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../environments/environment';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { provideAuth,getAuth, connectAuthEmulator } from '@angular/fire/auth';
-import { provideFirestore,getFirestore, connectFirestoreEmulator } from '@angular/fire/firestore';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth, getAuth, connectAuthEmulator } from '@angular/fire/auth';
+import {
+  provideFirestore,
+  getFirestore,
+  connectFirestoreEmulator,
+} from '@angular/fire/firestore';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { EditPageComponent } from './edit-page/edit-page.component';
 import { ExperienceComponent } from './edit-page/experience/experience.component';
@@ -72,21 +76,26 @@ import { ViewPageComponent } from './view-page/view-page.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    // Initialize Firebase from environment
     provideFirebaseApp(() => initializeApp(environment.firebase)),
+    // Initialize Firebase authentication
     provideAuth(() => {
       const auth = getAuth();
-      connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+      // Use emulator as default Firebase authentication
+      // connectAuthEmulator(auth, 'http://localhost:9099', {
+      //   disableWarnings: true,
+      // });
       return auth;
     }),
+    // Initialize Firestore
     provideFirestore(() => {
       const firestore = getFirestore();
-      connectFirestoreEmulator(firestore, 'localhost', 8086);
+      // Use emulator as default Firestore
+      // connectFirestoreEmulator(firestore, 'localhost', 8086);
       return firestore;
-    })
+    }),
   ],
-  providers: [
-    ResumeService,
-  ],
-  bootstrap: [AppComponent]
+  providers: [ResumeService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

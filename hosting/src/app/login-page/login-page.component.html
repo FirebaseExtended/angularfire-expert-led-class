@@ -15,6 +15,7 @@
  -->
 
  <main>
+  <!-- Read value of user$ observable -->
   <div *ngIf="user$ | async as user else showLogin">
     <h1 class="title">{{ user.displayName }}</h1>
   </div>

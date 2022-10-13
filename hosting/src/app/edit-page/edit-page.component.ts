@@ -14,11 +14,10 @@
  limitations under the License.
  */
 
-import { Component, Inject, inject } from '@angular/core';
-import { Resume, CommentUpdate, Comment, ListUpdate, SkillUpdate, OverviewUpdate, ExperienceUpdate, ResumeListUpdate } from '../models/resume.model';
+import { Component, inject } from '@angular/core';
+import { Resume, CommentUpdate, Comment, ExperienceUpdate, ResumeListUpdate } from '../models/resume.model';
 import { ActivatedRoute } from '@angular/router';
 import { ResumeService } from '../services/resume.service';
-import { startWith } from 'rxjs';
 import { User } from '@angular/fire/auth';
 
 @Component({
@@ -27,13 +26,17 @@ import { User } from '@angular/fire/auth';
   styleUrls: ['./edit-page.component.css'],
 })
 export class EditPageComponent {
+  // Inject ResumeService and ActivatedRoute
   private activatedRoute = inject(ActivatedRoute);
   private resumeService = inject(ResumeService);
+  // Get user and resume uid from ActivatedRoute
   user: User = this.activatedRoute.snapshot.data['user'];
   routeId = this.activatedRoute.snapshot.paramMap.get('uid')!;
+  // Get resume and comments using ResumeService and resume uid
   resume$ = this.resumeService.resume$(this.routeId);
   comments$ = this.resumeService.comments$(this.routeId);
 
+  // Updates the resume doc using ResumeService
   onUpdate(update: ExperienceUpdate) {
     let resumeUpdate: Partial<Resume> = {};
     resumeUpdate.id = this.routeId;
@@ -46,14 +49,17 @@ export class EditPageComponent {
     this.resumeService.updateExperience(this.routeId, update);
   }
 
+  // Update list in resume using ResumeService
   onArrayAdd(update: ResumeListUpdate) {
     this.resumeService.updateArrayInResume(this.routeId, update);
   }
 
+  // Add to list in resume using ResumeService
   addComment(comment: CommentUpdate) {
     this.resumeService.addComment(comment);
   }
 
+  // Delete list in resume using ResumeService
   deleteComment(comment: Comment) {
     this.resumeService.deleteComment(comment);
   }

@@ -20,13 +20,16 @@ import { Overview, OverviewUpdate } from 'src/app/models/resume.model';
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.css']
+  styleUrls: ['./overview.component.css'],
 })
 export class OverviewComponent {
+  // Emit change event to parent
+  @Output('on-change') onChange = new EventEmitter<OverviewUpdate>();
+  // Get overview array and editable state
   @Input() overview!: string[];
   @Input('is-editable') isEditable = false;
-  @Output('on-change') onChange = new EventEmitter<OverviewUpdate>();
 
+  // Emit overview update event
   updateWork(update: OverviewUpdate) {
     this.onChange.next(update);
   }
