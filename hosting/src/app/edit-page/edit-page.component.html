@@ -1,3 +1,4 @@
+<!-- Read value of resume$ observable -->
 <main *ngIf="resume$ | async as resume">
   <app-resume
     [is-editable]="user.uid === routeId"
@@ -8,6 +9,7 @@
   </app-resume>
 </main>
 
+<!-- Read value of comments$ observable -->
 <aside *ngIf="comments$ | async as comments">
   <app-comments
     [resume-id]="routeId"

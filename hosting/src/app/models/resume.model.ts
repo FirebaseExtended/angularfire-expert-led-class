@@ -17,39 +17,46 @@
 import type { User } from "firebase/auth";
 import { DocumentReference, Timestamp, FieldValue } from "firebase/firestore";
 
+// Define action for arbitrary list update
 export type ListUpdate<T, K = any> = { key: T, item: K, type: 'added' | 'removed' }
+
+// Define action for skills list update
 export type SkillUpdate = ListUpdate<'skills', string>;
+
+// Define action for overview list update
 export type OverviewUpdate = ListUpdate<'overview', string>;
+
+// Define action for updating either skill or overview
 export type ResumeListUpdate = SkillUpdate | OverviewUpdate;
+
+// Deine action for updating experience
 export type ExperienceUpdate = { 
   key: 'experience', 
   item: Experience, 
   type: 'added' | 'removed' | 'modified'
 }
 
+// Define user type within a resume
 export type ResumeUser = {
   photoURL: string | null;
   displayName: string | null;
   uid: string | null;
 }
 
+// Define overview type that includes a string array of relevant work
 export type Overview = {
   relevantWork: string[];
 }
 
-export type Details = {
-  title?: string;
-  startDate?: Date;
-  endDate?: Date;
-}
-
-export interface Experience extends Details {
+// Define interface for experience
+export interface Experience {
   id?: string;
   title: string;
   startDate: Date;
   endDate: Date;
 }
 
+// Define experiencesnap type
 export type ExperienceSnap = {
   id: string;
   title: string;
@@ -58,6 +65,7 @@ export type ExperienceSnap = {
   relevantWork: string[];
 }
 
+// Define basic resume type with resume fields and user
 type BaseResume = {
   id: string;
   overview: string[];
@@ -65,26 +73,20 @@ type BaseResume = {
   user: ResumeUser;
 }
 
+// Define resume interface
 export interface Resume extends BaseResume {
   experiences: Experience[];
 }
 
+// Define resume snap interface that uses experience snap
 export interface ResumeSnap extends BaseResume {
   experience: ExperienceSnap[];
 }
 
-export type ResumeViewModel = {
-  resume: Partial<Resume>;
-  user: User;
-}
-
+// Define type for resume doc reference
 export type ResumeRef = DocumentReference<Resume>;
 
-export type ResumeRefModel = {
-  ref: ResumeRef;
-  user: User;
-}
-
+// Define type for basic comment
 type BaseComment = {
   uid: string;
   photoURL: string | null;
@@ -93,16 +95,18 @@ type BaseComment = {
   resumeId: string;
 }
 
+// Define comment interface
 export interface Comment extends BaseComment {
   id: string;
   timestamp?: Timestamp;
   timeDisplay?: string;
 }
-
+// Define comment update interface
 export interface CommentUpdate extends BaseComment {
   timestamp: FieldValue;
 }
 
+// Define resume class
 export class ResumeObject implements Resume {
   experiences: Experience[] = [];
   id!: string;

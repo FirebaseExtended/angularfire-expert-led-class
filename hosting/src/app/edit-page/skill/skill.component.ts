@@ -23,25 +23,29 @@ import { SkillUpdate } from 'src/app/models/resume.model';
   styleUrls: ['./skill.component.css'],
 })
 export class SkillComponent {
+  // Emit change event to parent
   @Output('skill-change') onSkillChange = new EventEmitter<SkillUpdate>();
+  // Get skills array and editable state
   @Input() skills!: string[];
   @Input('is-editable') isEditable = false;
   newSkill = '';
 
+  // Emit add skill event
   onAdd() {
-    this.onSkillChange.emit({ 
-      key: 'skills', 
-      item: this.newSkill, 
-      type: 'added' 
+    this.onSkillChange.emit({
+      key: 'skills',
+      item: this.newSkill,
+      type: 'added',
     });
     this.newSkill = '';
   }
 
+  // Emit remove skill event
   onRemove(skillToDelete: string) {
-    this.onSkillChange.emit({ 
-      key: 'skills', 
-      item: skillToDelete, 
-      type: 'removed' 
+    this.onSkillChange.emit({
+      key: 'skills',
+      item: skillToDelete,
+      type: 'removed',
     });
   }
 }

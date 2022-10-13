@@ -24,10 +24,13 @@ import { ResumeService } from '../services/resume.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+  // Inject ResumeService and Auth
   resumeService: ResumeService = inject(ResumeService);
   private auth: Auth = inject(Auth);
+  // Get current user from auth state
   user$ = authState(this.auth)
 
+  // Log out
   logout() {
     signOut(this.auth)
       .catch((error) => {

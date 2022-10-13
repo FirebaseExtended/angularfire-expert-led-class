@@ -23,14 +23,17 @@ import { Experience, ExperienceUpdate } from 'src/app/models/resume.model';
   styleUrls: ['./experience.component.css'],
 })
 export class ExperienceComponent {
-  @Input() experiences?: Experience[];
+  // Emit change event to parent
   @Output('on-change') onChange = new EventEmitter<ExperienceUpdate>();
+  // Get experience array and editable state
+  @Input() experiences?: Experience[];
   @Input('is-editable') isEditable = false;
 
   ngOnInit() {
     this.experiences = this.experiences || [];
   }
 
+  // Emit remove skiexperiencell event
   delete(experience: Experience) {
     this.onChange.next({
       type: 'removed',
@@ -39,19 +42,21 @@ export class ExperienceComponent {
     });
   }
 
+  // Emit add experience event
   add() {
     const item = {
       title: '',
       startDate: new Date(),
       endDate: new Date(),
     };
-    this.onChange.next({  
+    this.onChange.next({
       key: 'experience',
       type: 'added',
       item,
     });
   }
-
+ 
+  // Emit modify experience event
   onUpdate(experience: Experience) {
     this.onChange.next({
       key: 'experience',
@@ -59,5 +64,4 @@ export class ExperienceComponent {
       item: experience,
     });
   }
-
 }
