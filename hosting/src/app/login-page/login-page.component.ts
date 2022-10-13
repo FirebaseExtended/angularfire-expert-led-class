@@ -28,6 +28,7 @@ import {
   UserCredential,
 } from '@angular/fire/auth';
 import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 import { ResumeUser } from '../models/resume.model';
 import { ResumeService } from '../services/resume.service';
 
@@ -37,10 +38,11 @@ import { ResumeService } from '../services/resume.service';
   styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent implements OnInit {
-  // Inject Auth, Firestore, and ResumeService
+  // Inject Auth, Firestore, Router, and ResumeService
   private auth: Auth = inject(Auth);
   private firestore: Firestore = inject(Firestore);
   private resumeService = inject(ResumeService);
+  private router = inject(Router);
   // Get user from auth state
   user$ = authState(this.auth);
   // Init Google auth provider
@@ -48,31 +50,28 @@ export class LoginPageComponent implements OnInit {
 
   constructor() {}
 
-  async ngOnInit() {
+  ngOnInit() {
     // Get auth after redirect
     getRedirectResult(this.auth).then((result) => {
-      if (!result) {
-        return;
-      }
+      if (!result) { return; }
       // Create empty resume in Firestore on user's first login
       if (getAdditionalUserInfo(result as UserCredential)?.isNewUser) {
         this.resumeService.createEmptyResume(result?.user.uid || '');
       }
       this.updateUserData(result!.user);
+      this.router.navigate([`edit/${result.user.uid}`])
     });
   }
-
+  
   // Update user in resume doc
-  private updateUserData(user: User) {
-    const userRef = doc(this.firestore, `resumes/${user.uid}`);
-    const appUser: ResumeUser = {
-      uid: user.uid!,
-      displayName: user.displayName!,
-      photoURL: user.photoURL!,
+  private updateUserData(result: User) {
+    const userRef = doc(this.firestore, `resumes/${result.uid}`);
+    const user = {
+      uid: result.uid!,
+      displayName: result.displayName!,
+      photoURL: result.photoURL!,
     };
-    return setDoc(userRef, {user: JSON.parse(JSON.stringify(appUser))}, {
-      merge: true,
-    });
+    return setDoc(userRef, { user }, { merge: true });
   }
 
   // Log in anonymously
