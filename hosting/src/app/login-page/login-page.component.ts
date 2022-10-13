@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-import { Component, inject, OnInit } from '@angular/core'
+import { Component, inject, OnInit } from '@angular/core';
 import {
   Auth,
   authState,
@@ -23,10 +23,13 @@ import {
   signInWithRedirect,
   signOut,
   User,
-  getRedirectResult
-} from '@angular/fire/auth'
-import { doc, Firestore, setDoc } from '@angular/fire/firestore'
-import { ResumeUser } from '../models/resume.model'
+  getRedirectResult,
+  getAdditionalUserInfo,
+  UserCredential,
+} from '@angular/fire/auth';
+import { doc, Firestore, setDoc } from '@angular/fire/firestore';
+import { ResumeUser } from '../models/resume.model';
+import { ResumeService } from '../services/resume.service';
 
 @Component({
   selector: 'app-login-page',
@@ -34,25 +37,35 @@ import { ResumeUser } from '../models/resume.model'
   styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent implements OnInit {
-  private auth: Auth = inject(Auth)
-  private firestore: Firestore = inject(Firestore)
-  user$ = authState(this.auth)
-  private provider = new GoogleAuthProvider()
+  private auth: Auth = inject(Auth);
+  private firestore: Firestore = inject(Firestore);
+  private resumeService = inject(ResumeService);
+  user$ = authState(this.auth);
+  private provider = new GoogleAuthProvider();
   constructor() {}
 
   async ngOnInit() {
-    const result = await getRedirectResult(this.auth);
-    this.updateUserData(result!.user);
+    getRedirectResult(this.auth).then((result) => {
+      if (!result) {
+        return;
+      }
+      if (getAdditionalUserInfo(result as UserCredential)?.isNewUser) {
+        this.resumeService.createEmptyResume(result?.user.uid || '');
+      }
+      this.updateUserData(result!.user);
+    });
   }
 
   private updateUserData(user: User) {
-    const userRef = doc(this.firestore, `resumes/${user.uid}`)
+    const userRef = doc(this.firestore, `resumes/${user.uid}`);
     const appUser: ResumeUser = {
       uid: user.uid!,
       displayName: user.displayName!,
       photoURL: user.photoURL!,
-    }
-    return setDoc(userRef, appUser, { merge: true })
+    };
+    return setDoc(userRef, {user: JSON.parse(JSON.stringify(appUser))}, {
+      merge: true,
+    });
   }
 
   loginGuest() {
@@ -60,15 +73,6 @@ export class LoginPageComponent implements OnInit {
   }
 
   login() {
-    signInWithRedirect(this.auth, this.provider)
-  }
-  logout() {
-    signOut(this.auth)
-      .then(() => {
-        console.log('signed out')
-      })
-      .catch((error) => {
-        console.log('sign out error: ' + error)
-      })
+    signInWithRedirect(this.auth, this.provider);
   }
 }

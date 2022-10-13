@@ -13,3 +13,38 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+.title {
+  font-size: 64px;
+  font-weight: bold;
+  color: var(--theme-surface-dark);
+}
+
+.description {
+  font-size: 32px;
+  font-weight: lighter;
+}
+
+.login-button {
+  float: left;
+  width: 200px;
+  height: 56px;
+  font-size: 24px;
+  background-color: var(--theme-surface-dark);
+  color: var(--theme-text-on-dark);
+  font-weight: lighter;
+}
+
+:host {
+  display: grid;
+  grid-template-columns: var(--site-grid);
+  padding-block: 64px;
+}
+
+:host > * {
+  grid-column: main;
+}
+
+main {
+  display: grid;
+  gap: 32px;
+}

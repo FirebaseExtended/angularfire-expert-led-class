@@ -19,9 +19,10 @@
     <h1>FireRes</h1>
     <div class="auth" *ngIf="user$ | async as user; else signin">
       <a [href]="'/edit/' + user.uid">My Resume</a>
+      <p class="logout" (click)="logout()">Log Out</p>
     </div>
     <ng-template #signin>
-      <a href="/signin">Sign In</a>
+      <a href="/login">Sign In</a>
     </ng-template>
   </nav>
 </header>
