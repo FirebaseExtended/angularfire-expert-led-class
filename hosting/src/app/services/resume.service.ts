@@ -16,7 +16,7 @@
 
 import { inject, Injectable } from '@angular/core'
 import { Auth, authState } from '@angular/fire/auth'
-import { map, filter, withLatestFrom, Observable, of } from 'rxjs'
+import { map, filter, withLatestFrom, Observable, of, combineLatest } from 'rxjs'
 import { Resume, ResumeSnap, Comment, CommentUpdate, ResumeListUpdate, Experience, ExperienceSnap, ExperienceUpdate, ResumeObject, ResumeUser } from '../models/resume.model'
 import {
   collection,
@@ -50,32 +50,51 @@ export class ResumeService {
 
   // Create resume reference
   resumeRef<T = Resume | ResumeSnap>(resumeId: string) {
-
+    const resumeCollectionRef = collection(this.firestore, 'resumes') as CollectionReference<T>;
+    return doc(resumeCollectionRef, resumeId);
   }
 
   // Creaet a resume observable
   resume$(resumeId: string): Observable<Partial<Resume>> {
-    return of({});
+    const resumeRef = this.resumeRef<ResumeSnap>(resumeId);
+    return combineLatest([
+      docData(resumeRef, { idField: 'id' }),
+      this.experiences$(resumeId),
+    ], (resume, experiences) => {
+      return {
+        ...resume,
+        experiences,
+      }
+    });
   }
 
   experienceRef<T = ExperienceSnap | Experience>(resumeId: string) {
-
+    const resumeRef = this.resumeRef(resumeId);
+    return collection(resumeRef, 'experiences') as CollectionReference<T>;
   }
 
-  experiences$(resumeId: string): Observable<ExperienceSnap[]> {
-    return of({} as any);
+  experiences$(resumeId: string): Observable<Experience[]> {
+    const experienceRef = this.experienceRef<ExperienceSnap>(resumeId);
+    return collectionData(experienceRef, { idField: 'id' }).pipe(
+      map(experiences => this.setExperiencesDefaults(experiences))
+    );
   }
 
   commentsRef<T = CommentUpdate | Comment>(resumeId: string) {
-
+    const resumeRef = this.resumeRef(resumeId);
+    return collection(resumeRef, 'comments') as CollectionReference<T>;
   }
 
   comments$(resumeId: string): Observable<Comment[]> {
-    return of([]);
+    const commentsRef = this.commentsRef<Comment>(resumeId);
+    return collectionData(commentsRef, { idField: 'id' }).pipe(
+      map(comments => this.setCommentDefaults(comments))
+    );
   }
 
   async addComment(comment: CommentUpdate) {
-
+    const commentsRef = this.commentsRef<CommentUpdate>(comment.resumeId);
+    return addDoc(commentsRef, comment);    
   }
 
   async deleteComment(comment: Comment) {
@@ -88,11 +107,32 @@ export class ResumeService {
   }
 
   async updateArrayInResume(resumeId: string, update: ResumeListUpdate) {
-
+    const { type, item, key } = update;
+    const ref = this.resumeRef(resumeId);
+    const updateObject = {
+      [`${key}`]: type === 'added'? arrayUnion(item) : arrayRemove(item)
+    };
+    return setDoc(ref, updateObject, { merge: true });
   }
 
   async updateExperience(resumeId: string, experience: ExperienceUpdate) {
-
+    const ref = this.experienceRef<Experience>(resumeId);
+    switch(experience.type) {
+      case 'added': {
+        addDoc(ref, experience.item);
+        break;
+      }
+      case 'modified': {
+        const docRef = doc(ref, experience.item.id);
+        setDoc(docRef, experience.item, { merge: true });
+        break;
+      }
+      case 'removed': {
+        const docRef = doc(ref, experience.item.id);
+        deleteDoc(docRef);
+        break;
+      }
+    }
   }
 
   private setExperiencesDefaults(experiences: ExperienceSnap[] = []): Experience[] {
