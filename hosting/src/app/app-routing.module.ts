@@ -14,39 +14,52 @@
  limitations under the License.
  */
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { redirectUnauthorizedTo, AuthGuard } from '@angular/fire/auth-guard';
-
-import { LoginPageComponent } from './login-page/login-page.component';
-import { EditPageComponent } from './edit-page/edit-page.component';
-import { ResumeResolver, UserResolver } from './resume.resolver';
-import { ViewPageComponent } from './view-page/view-page.component';
-
-const routes: Routes = [
-  { 
-    path: '', 
-    component: LoginPageComponent, 
-  },
-  { 
-    path: 'login', 
-    component: LoginPageComponent, 
-  },
-  { 
-    path: 'edit/:uid', 
-    component: EditPageComponent,
-  },
-  { 
-    path: 'view/:uid', 
-    component: ViewPageComponent,
-    resolve: {
-      resume: ResumeResolver,
-    }
-  },
-];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
+ import { NgModule } from '@angular/core';
+ import { RouterModule, Routes } from '@angular/router';
+ import { redirectUnauthorizedTo, AuthGuard } from '@angular/fire/auth-guard';
+ 
+ import { LoginPageComponent } from './login-page/login-page.component';
+ import { EditPageComponent } from './edit-page/edit-page.component';
+ import { ResumeResolver, UserResolver } from './resume.resolver';
+ import { ViewPageComponent } from './view-page/view-page.component';
+ 
+ const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+ 
+ const routes: Routes = [
+   {
+     path: '',
+     component: LoginPageComponent,
+   },
+   {
+     path: 'login',
+     component: LoginPageComponent,
+   },
+   {
+     path: 'edit/:uid',
+     component: EditPageComponent,
+     canActivate: [AuthGuard],
+     data: {
+       authGuardPipe: redirectUnauthorizedToLogin
+     },
+     resolve: {
+       user: UserResolver
+     }
+   },
+   {
+     path: 'view/:uid',
+     component: ViewPageComponent,
+     data: {
+       authGuardPipe: redirectUnauthorizedToLogin
+     },
+     resolve: {
+       resume: ResumeResolver,
+     }
+   },
+ ];
+ 
+ @NgModule({
+   imports: [RouterModule.forRoot(routes)],
+   exports: [RouterModule]
+ })
+ export class AppRoutingModule { }
+ 
