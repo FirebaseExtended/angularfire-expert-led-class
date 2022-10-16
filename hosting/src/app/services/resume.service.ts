@@ -140,8 +140,8 @@ export class ResumeService {
       experiences: [],
       overview: [],
       skills: [],
-      user,
+      user: { displayName: user.displayName, uid: user.uid, photoURL: user.photoURL || null },
     } as any);
-    addDoc(collection(this.firestore, 'resumes'), resumeData);
+    return addDoc(collection(this.firestore, 'resumes'), resumeData);
   }
 }
