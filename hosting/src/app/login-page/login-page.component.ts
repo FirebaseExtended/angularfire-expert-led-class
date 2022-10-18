@@ -50,7 +50,7 @@ export class LoginPageComponent implements OnInit {
     getRedirectResult(this.auth).then((result) => {
       if (!result) { return; }
       if (getAdditionalUserInfo(result as UserCredential)?.isNewUser) {
-        this.resumeService.createEmptyResume(result?.user.uid || '');
+        this.resumeService.createEmptyResume(result?.user);
       }
       this.updateUserData(result!.user);
       this.router.navigate([`edit/${result.user.uid}`])
