@@ -82,11 +82,6 @@ export class ResumeService {
 
   }
 
-  // Create an update method for the current user's resume
-  async updateCurrent(resume: Partial<Resume>) {
-
-  }
-
   async updateArrayInResume(resumeId: string, update: ResumeListUpdate) {
 
   }
@@ -121,23 +116,11 @@ export class ResumeService {
 
   private setDefaults(resume: Resume): Resume {
     resume.overview = resume.overview || { relevantWork: [] };
-    resume.experiences = resume.experiences || [{ relevantWork: [] }];
-    const experiences: Experience[] = resume.experiences?.map(experience => {
-      return {
-        title: experience.title,
-        startDate: experience.startDate,
-        endDate: experience.endDate,
-      };
-    });
-    return {
-      ...resume,
-      experiences,
-    }
+    return resume;
   }
   
   async createEmptyResume(user: User) {
     const resumeData = this.setDefaults({
-      experiences: [],
       overview: [],
       skills: [],
       user: { displayName: user.displayName, uid: user.uid, photoURL: user.photoURL || null },

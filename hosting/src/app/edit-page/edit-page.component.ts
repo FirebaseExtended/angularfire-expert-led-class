@@ -35,14 +35,6 @@ export class EditPageComponent {
   comments$ = this.resumeService.comments$(this.routeId);
 
   onUpdate(update: ExperienceUpdate) {
-    let resumeUpdate: Partial<Resume> = {};
-    resumeUpdate.id = this.routeId;
-    resumeUpdate.user = {
-      photoURL: this.user.photoURL,
-      displayName: this.user.displayName,
-      uid: this.user.uid,
-    };
-    this.resumeService.updateCurrent(resumeUpdate);
     this.resumeService.updateExperience(this.routeId, update);
   }
 
