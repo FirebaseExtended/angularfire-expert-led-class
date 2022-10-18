@@ -42,19 +42,16 @@ export class ResumeService {
   firestore = inject(Firestore)
   auth = inject(Auth)
 
-  // Create a user observable
   user$ = authState(this.auth).pipe(
     filter(user => user !== null),
     map(user => user!),
   )
 
-  // Create resume reference
   resumeRef<T = Resume | ResumeSnap>(resumeId: string) {
     const resumeCollectionRef = collection(this.firestore, 'resumes') as CollectionReference<T>;
     return doc(resumeCollectionRef, resumeId);
   }
 
-  // Creaet a resume observable
   resume$(resumeId: string): Observable<Partial<Resume>> {
     const resumeRef = this.resumeRef<ResumeSnap>(resumeId);
     return combineLatest([
@@ -98,12 +95,9 @@ export class ResumeService {
   }
 
   async deleteComment(comment: Comment) {
-
-  }
-
-  // Create an update method for the current user's resume
-  async updateCurrent(resume: Partial<Resume>) {
-
+    const commentsRef = this.commentsRef<CommentUpdate>(comment.resumeId);
+    const commentDoc = doc(commentsRef, comment.id);
+    return deleteDoc(commentDoc);    
   }
 
   async updateArrayInResume(resumeId: string, update: ResumeListUpdate) {
@@ -161,23 +155,11 @@ export class ResumeService {
 
   private setDefaults(resume: Resume): Resume {
     resume.overview = resume.overview || { relevantWork: [] };
-    resume.experiences = resume.experiences || [{ relevantWork: [] }];
-    const experiences: Experience[] = resume.experiences?.map(experience => {
-      return {
-        title: experience.title,
-        startDate: experience.startDate,
-        endDate: experience.endDate,
-      };
-    });
-    return {
-      ...resume,
-      experiences,
-    }
+    return resume;
   }
 
   async createEmptyResume(user: User) {
     const resumeData = this.setDefaults({
-      experiences: [],
       overview: [],
       skills: [],
       user: { displayName: user.displayName, uid: user.uid, photoURL: user.photoURL || null },
