@@ -15,7 +15,7 @@
  */
 
 import { inject, Injectable } from '@angular/core'
-import { Auth, authState } from '@angular/fire/auth'
+import { Auth, authState, User } from '@angular/fire/auth'
 import { map, filter, withLatestFrom } from 'rxjs'
 import { Resume, ResumeSnap, Comment, CommentUpdate, ResumeListUpdate, Experience, ExperienceSnap, ExperienceUpdate, ResumeObject, ResumeUser } from '../models/resume.model'
 import {
@@ -181,9 +181,12 @@ export class ResumeService {
     }
   }
   
-  async createEmptyResume(resumeId: String) {
-    const resumeData = JSON.parse(JSON.stringify(this.setDefaults(new ResumeObject() as Resume)));
-    resumeData.id = resumeId;
-    setDoc(doc(this.firestore, "resumes", resumeData.id), resumeData, {merge: true});
+  async createEmptyResume(user: User) {
+    const resumeData = this.setDefaults({
+      overview: [],
+      skills: [],
+      user: { displayName: user.displayName, uid: user.uid, photoURL: user.photoURL || null },
+    } as any);
+    return addDoc(collection(this.firestore, 'resumes'), resumeData);
   }
 }
